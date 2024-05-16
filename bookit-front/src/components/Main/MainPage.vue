@@ -5,7 +5,7 @@
       <div>
         <img src="../../assets/mainPageBookitTripPhoto.jpg" class="img-fluid img-responsive" alt="Your Image Alt Text">
       </div>
-      
+      <!-- Search form -->
       <div class="row mt-3">
         <div class="col-2">
           <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Location" v-model="selectedLocation">
@@ -45,6 +45,41 @@
           <button class="btn btn-primary">Search</button>
         </div>
       </div>
+
+      <!-- Trending destinations -->
+
+      <div class="mt-4">
+        <h2 class="text-light mb-3">Trending destinations</h2>
+        <div class="row">
+          <div class="col">
+            <a href="#" target="_blank">
+              <img src="../../assets/Nis.jpg" alt="Destination 1" class="img-thumbnail">
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" target="_blank">
+              <img src="../../assets/Kopaonik.jpg" alt="Destination 2" class="img-thumbnail">
+            </a>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <a href="#" target="_blank">
+              <img src="../../assets/Belgrade.jpg" alt="Destination 3" class="img-thumbnail">
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" target="_blank">
+              <img src="../../assets/NoviSad.jpeg" alt="Destination 4" class="img-thumbnail">
+            </a>
+          </div>
+          <div class="col">
+            <a href="#" target="_blank">
+              <img src="../../assets/Zlatibor.jpg" alt="Destination 5" class="img-thumbnail">
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -66,7 +101,7 @@ export default {
       adults: 2,
       children: 0,
       rooms: 1,
-      allLocations: ['San Francisco', 'New York', 'Seattle', 'Los Angeles', 'Chicago', 'London', 'Paris', 'Tokyo']
+      allLocations: ['Belgrade', 'Novi Sad', 'Niš', 'Kopaonik', 'Zlatibor']
     }
   }
 }
