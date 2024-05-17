@@ -11,6 +11,7 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@vueform/slider": "^2.1.10",
     "@vuepic/vue-datepicker": "^8.6.0",
     "bootstrap": "^4.6.0",
     "bootstrap-datepicker": "^1.10.0",
