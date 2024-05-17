@@ -20,8 +20,8 @@
                 </li>
             </ul>
             <a class="text-light text-decoration-none p-2" href="#">List your property</a>
-            <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="#">Register</a>
-            <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="#">Sign in</a>
+            <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/">Login</a>
+            <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/signup">Sign up</a>
         </div>
     </nav>
 </template>
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-        user: 'nesto'
+        user: ''
     };
   },
   methods: {
