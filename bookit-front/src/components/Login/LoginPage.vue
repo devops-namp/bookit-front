@@ -23,7 +23,7 @@
           </div>
           <div class="card-footer text-center">
             <span class="me-1">Don't have an account?</span>
-            <router-link to="/register" class="fw-bold text-body">Sign up here</router-link>
+            <router-link to="/signup" class="fw-bold text-body">Sign up here</router-link>
           </div>
         </div>
       </div>
