@@ -15,6 +15,7 @@ library.add(faSuitcase)
 
 import MainPage from './components/Main/MainPage.vue'
 import LoginPage from './components/Login/LoginPage.vue'
+import SignUpPage from './components/SignUp/SignUpPage.vue'
 
 const routes = [
     {
@@ -24,6 +25,10 @@ const routes = [
     {
         path: "/main",
         component: MainPage
+    },
+    {
+        path: "/signup",
+        component: SignUpPage
     }
 ]
 
