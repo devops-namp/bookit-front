@@ -9,31 +9,20 @@
             <h5>Filters</h5>
             <div class="form-group">
               <label for="priceRange">Price Range</label>
-              <vue3-slider v-model="priceRange" :min="0" :max="1000" :tooltip="'always'"/>
-              <div class="d-flex justify-content-between">
-                <span>{{ priceRange[0] }}$</span>
-                <span>{{ priceRange[1] }}$</span>
+              <slider v-model="priceRange" :format="format" :min="0" :max="500" :tooltips="false" />
+              <div class="d-flex justify-content-between mt-2">
+                <span>{{ priceRange[0] }}€</span>
+                <span>{{ priceRange[1] }}€</span>
               </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="wifi" v-model="filters.wifi" />
-              <label class="form-check-label" for="wifi">Wi-Fi</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="kitchen" v-model="filters.kitchen" />
-              <label class="form-check-label" for="kitchen">Kitchen</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="airCondition" v-model="filters.airCondition" />
-              <label class="form-check-label" for="airCondition">Air conditioning</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="freeParking" v-model="filters.freeParking" />
-              <label class="form-check-label" for="freeParking">Free parking</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="wc" v-model="filters.wc" />
-              <label class="form-check-label" for="wc">Inner toilet</label>
+            <div class="form-check" v-for="(filter, key) in filters" :key="key">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                :id="key" 
+                v-model="filters[key]"
+              />
+              <label class="form-check-label" :for="key">{{ filterFormat(key) }}</label>
             </div>
           </div>
         </div>
@@ -43,42 +32,56 @@
 </template>
 
 <script>
-import NavBar from '../util/NavBar.vue'
-import SearchBar from '../util/SearchBar.vue'
-import Vue3Slider from 'vue3-slider'
+import NavBar from '../util/NavBar.vue';
+import SearchBar from '../util/SearchBar.vue';
+import Slider from '@vueform/slider';
 
 export default {
   name: 'SearchPage',
   components: {
     NavBar,
     SearchBar,
-    Vue3Slider
+    Slider
   },
   data() {
     return {
-      priceRange: [100, 500],
+      priceRange: [100, 400],
       filters: {
         wifi: false,
         kitchen: false,
         airCondition: false,
         freeParking: false,
-        wc: false
+        sharedToilet: false,
       }
+    };
+  },
+  methods: {
+    format(value) {
+      return `€${value}`;
+    },
+    filterFormat(filter) {
+      return filter
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+        .replace(/^[a-z]/, match => match.toUpperCase())
+        .trim();
     }
   },
   watch: {
     priceRange(newVal) {
-      console.log('Price range changed:', newVal)
+      console.log('Price range changed:', newVal);
     },
     filters: {
       handler(newVal) {
-        console.log('Filters changed:', newVal)
+        console.log('Filters changed:', newVal);
       },
-      deep: true
-    }
-  }
-}
+      deep: true,
+    },
+  },
+};
 </script>
+
+<style src="@vueform/slider/themes/default.css"></style>
 
 <style scoped>
 .entire-div {
