@@ -2,11 +2,7 @@
   <div class="bg-dark entire-div">
     <div class="container">
       <nav-bar/>
-      <div>
-        <img src="../../assets/mainPageBookitTripPhoto.jpg" class="img-fluid img-responsive" alt="Your Image Alt Text">
-      </div>
       <search-bar/>
-      <trending-destinations/>
     </div>
   </div>
 </template>
@@ -15,14 +11,12 @@
 <script>
 import NavBar from '../util/NavBar.vue'
 import SearchBar from '../util/SearchBar.vue'
-import TrendingDestinations from './TrendingDestinations.vue'
 
 export default {
-  name: 'MainPage',
+  name: 'SearchPage',
   components: {
     NavBar,
     SearchBar,
-    TrendingDestinations
   },
   data() {
     return {
