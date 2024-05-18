@@ -5,17 +5,17 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ name }}</h5>
-      <p class="card-text"><strong>Location:</strong> {{ location }}</p>
-      <p class="card-text"><strong>Features:</strong></p>
-      <ul class="list-unstyled">
+      <p class="card-text mb-0"><strong>Location:</strong> {{ location }}</p>
+      <p class="card-text mb-0"><strong>Features:</strong></p>
+      <ul class="list-unstyled mb-1">
         <li v-for="(value, key) in filters" :key="key">
           <i class="bi bi-check-circle checkmark" v-if="value"/>
           <i class="bi bi-x-circle x-circle" v-else></i>
           {{ filterFormat(key) }}
         </li>
       </ul>
-      <p class="card-text"><strong>Guests:</strong> {{ minGuests }} - {{ maxGuests }}</p>
-      <p class="card-text"><strong>Price:</strong> {{ price }}€</p>
+      <p class="card-text mb-0"><strong>Guests:</strong> {{ minGuests }} - {{ maxGuests }}</p>
+      <label class="card-text"><strong>Price:</strong> {{ price }}€</label>
     </div>
   </div>
 </template>
