@@ -1,6 +1,9 @@
 <template>
   <div class="bg-dark entire-div">
-    <div class="container pt-4 pb-4 text-light">
+    <div class="container">
+      <nav-bar />
+    </div>
+    <div class="container pt-5 pb-5 text-light">
       <form @submit.prevent="submitForm">
         <div class="small-container bg-secondary p-3 mx-auto">
           <div class="form-group">
@@ -41,7 +44,7 @@
 
           <div class="form-group">
             <label>Price Type</label>
-            <div class="d-flex align-items-center pl-5 pr-5">
+            <div class="d-flex justify-content-center">
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" id="price-per-unit" value="per-unit" v-model="form.priceType" required />
                 <label class="form-check-label" for="price-per-unit">Price per Unit</label>
@@ -50,25 +53,8 @@
                 <input class="form-check-input" type="radio" id="price-per-person" value="per-person" v-model="form.priceType" required />
                 <label class="form-check-label" for="price-per-person">Price per Person</label>
               </div>
-              <input type="number" class="form-control col-3 pr-1" id="property-price" min="0" v-model="form.price" required placeholder="Price (€)" />
             </div>
           </div>
-
-          <div class="form-group">
-            <label>Availability</label>
-            <div class="col-12 pl-5 pr-5">
-              <VueDatePicker
-                v-model="form.availability"
-                range
-                range-separator="to"
-                start-placeholder="Start date"
-                end-placeholder="End date"
-                :enable-time-picker="false"
-                format="dd-MM-yyyy"
-              ></VueDatePicker>
-            </div>
-          </div>
-
           <div class="form-group">
             <label>Price Adjustments</label>
             <div class="pl-4 pr-4">
@@ -82,6 +68,7 @@
                   class="mr-2"
                   :enable-time-picker="false"
                   format="dd-MM-yyyy"
+                  :min-date="new Date()"
                 ></VueDatePicker>
                 <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0" placeholder="Price (€)"/>
                 <button type="button" class="btn btn-danger" @click="removePriceAdjustment(index)">Remove</button>
@@ -122,6 +109,7 @@
 </template>
 
 <script>
+import NavBar from '../util/NavBar.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -129,6 +117,7 @@ export default {
   name: 'CreatePropertyListing',
   components: {
     VueDatePicker,
+    NavBar
   },
   data() {
     return {
@@ -139,8 +128,6 @@ export default {
         minGuests: 1,
         maxGuests: 1,
         priceType: 'per-unit',
-        price: null,
-        availability: [],
         images: [],
         priceAdjustments: [],
       },
