@@ -26,6 +26,21 @@
             </div>
           </div>
         </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-4" v-for="result in searchResults" :key="result.id">
+              <result-card
+                :image="result.image"
+                :name="result.name"
+                :location="result.location"
+                :filters="result.filters"
+                :minGuests="result.minGuests"
+                :maxGuests="result.maxGuests"
+                :price="result.price"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,13 +50,15 @@
 import NavBar from '../util/NavBar.vue';
 import SearchBar from '../util/SearchBar.vue';
 import Slider from '@vueform/slider';
+import ResultCard from './ResultCard.vue';
 
 export default {
   name: 'SearchPage',
   components: {
     NavBar,
     SearchBar,
-    Slider
+    Slider,
+    ResultCard
   },
   data() {
     return {
@@ -52,7 +69,73 @@ export default {
         airCondition: false,
         freeParking: false,
         sharedToilet: false,
-      }
+      },
+      searchResults: [
+        {
+          id: 1,
+          image: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/410940840.jpg?k=b149e5fa4c594b1445ea62e50c721aecfbde51ec63ace29d0a0563f2e34ef791&o=&hp=1',
+          name: 'Apartment 1',
+          location: 'Belgrade',
+          filters: {
+            wifi: true,
+            kitchen: true,
+            airCondition: false,
+            freeParking: true,
+            sharedToilet: false,
+          },
+          minGuests: 2,
+          maxGuests: 4,
+          price: 150
+        },
+        {
+          id: 2,
+          image: 'https://orangeny.com/wp-content/uploads/placeholder-TEMP.gif',
+          name: 'Apartment 2',
+          location: 'Novi Sad',
+          filters: {
+            wifi: true,
+            kitchen: false,
+            airCondition: true,
+            freeParking: false,
+            sharedToilet: true,
+          },
+          minGuests: 1,
+          maxGuests: 3,
+          price: 120
+        },
+        {
+          id: 3,
+          image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOJay94_jpIR9LNgj8yJUrVuZRXPtA-zNwAcu1-fTRHw&s',
+          name: 'Apartment 3',
+          location: 'Niš',
+          filters: {
+            wifi: true,
+            kitchen: true,
+            airCondition: true,
+            freeParking: true,
+            sharedToilet: true,
+          },
+          minGuests: 2,
+          maxGuests: 3,
+          price: 210
+        },
+        {
+          id: 4,
+          image: 'https://orangeny.com/wp-content/uploads/placeholder-TEMP.gif',
+          name: 'Apartment 4',
+          location: 'Novi Sad',
+          filters: {
+            wifi: false,
+            kitchen: true,
+            airCondition: false,
+            freeParking: false,
+            sharedToilet: false,
+          },
+          minGuests: 1,
+          maxGuests: 4,
+          price: 200
+        },
+      ]
     };
   },
   methods: {
