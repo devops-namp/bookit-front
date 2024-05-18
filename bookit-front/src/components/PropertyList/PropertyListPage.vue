@@ -9,7 +9,7 @@
               <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name"/>
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="property-location">Location</label>
             <div class="pl-5 pr-5">
@@ -31,12 +31,12 @@
 
           <div class="form-group">
             <label>Guests</label>
-              <div class="pl-5 pr-5 d-flex align-content-center">
-                <label class="ml-5 pr-2">from:</label>
-                <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
-                <label class="pr-2 pl-2">to:</label>
-                <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests" />
-              </div>
+            <div class="pl-5 pr-5 d-flex align-content-center">
+              <label class="ml-5 pr-2">from:</label>
+              <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
+              <label class="pr-2 pl-2">to:</label>
+              <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests" />
+            </div>
           </div>
 
           <div class="form-group">
@@ -50,8 +50,7 @@
                 <input class="form-check-input" type="radio" id="price-per-person" value="per-person" v-model="form.priceType" required />
                 <label class="form-check-label" for="price-per-person">Price per Person</label>
               </div>
-              <input type="number" class="form-control col-3 pr-1" id="property-price" min="0" v-model="form.price" required placeholder="Enter price" />
-              <label for="property-price">(€)</label>
+              <input type="number" class="form-control col-3 pr-1" id="property-price" min="0" v-model="form.price" required placeholder="Price (€)" />
             </div>
           </div>
 
@@ -64,7 +63,30 @@
                 range-separator="to"
                 start-placeholder="Start date"
                 end-placeholder="End date"
+                :enable-time-picker="false"
+                format="dd-MM-yyyy"
               ></VueDatePicker>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Price Adjustments</label>
+            <div class="pl-4 pr-4">
+              <div v-for="(priceAdjustment, index) in form.priceAdjustments" :key="index" class="d-flex mb-2">
+                <VueDatePicker
+                  v-model="priceAdjustment.dates"
+                  range
+                  range-separator="to"
+                  start-placeholder="Start date"
+                  end-placeholder="End date"
+                  class="mr-2"
+                  :enable-time-picker="false"
+                  format="dd-MM-yyyy"
+                ></VueDatePicker>
+                <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0" placeholder="Price (€)"/>
+                <button type="button" class="btn btn-danger" @click="removePriceAdjustment(index)">Remove</button>
+              </div>
+              <button type="button" class="btn btn-success" @click="addPriceAdjustment">Add Price Adjustment</button>
             </div>
           </div>
 
@@ -88,7 +110,7 @@
               </div>
             </div>
           </div>
-            <button type="submit" class="btn btn-info btn-lg btn-block">Submit</button>
+          <button type="submit" class="btn btn-info btn-lg btn-block">Submit</button>
         </div>
       </form>
     </div>
@@ -116,6 +138,7 @@ export default {
         price: null,
         availability: [],
         images: [],
+        priceAdjustments: [],
       },
       availableFilters: ['WiFi', 'Free Parking', 'Kitchen', 'Air Condition', 'Shared Toilet'],
     };
@@ -139,6 +162,12 @@ export default {
       this.form.images.splice(index, 1);
       this.form.images.unshift(selectedImage);
     },
+    addPriceAdjustment() {
+      this.form.priceAdjustments.push({ dates: [], price: null });
+    },
+    removePriceAdjustment(index) {
+      this.form.priceAdjustments.splice(index, 1);
+    },
   },
 };
 </script>
@@ -156,7 +185,7 @@ export default {
 .carousel-image {
   width: 100%;
   height: 30rem;
-  object-fit: contain; 
+  object-fit: contain;
 }
 
 .thumbnail-image {

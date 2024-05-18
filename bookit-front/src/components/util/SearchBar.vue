@@ -10,17 +10,17 @@
       <VueDatePicker
         v-model="startDate"
         placeholder="Start Date"
-        format="yyyy-MM-dd"
+        format="dd-MM-yyyy"
         :autoClose="true"
-      />
+        :enable-time-picker="false"></VueDatePicker>
     </div>
     <div class="col-2">
       <VueDatePicker
         v-model="endDate"
         placeholder="End Date"
-        format="yyyy-MM-dd"
+        format="dd-MM-yyyy"
         :autoClose="true"
-      />
+        :enable-time-picker="false"></VueDatePicker>
     </div>
     <div class="col d-flex align-items-center">
       <input type="number" class="form-control" v-model.number="adults" @input="validateInput('adults')">
