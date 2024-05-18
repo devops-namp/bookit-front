@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-        <a class="navbar-brand" href="#">BookIt.com</a>
+        <a class="navbar-brand" href="/main">BookIt.com</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -19,7 +19,7 @@
                     </div>
                 </li>
             </ul>
-            <a class="text-light text-decoration-none p-2" href="#">List your property</a>
+            <a class="text-light text-decoration-none p-2" href="/propertyListing">List your property</a>
             <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/">Login</a>
             <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/signup">Sign up</a>
         </div>
