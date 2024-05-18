@@ -12,6 +12,7 @@
         placeholder="Start Date"
         format="dd-MM-yyyy"
         :autoClose="true"
+        :min-date="new Date()"
         :enable-time-picker="false"></VueDatePicker>
     </div>
     <div class="col-2">
@@ -20,6 +21,7 @@
         placeholder="End Date"
         format="dd-MM-yyyy"
         :autoClose="true"
+        :min-date="new Date()"
         :enable-time-picker="false"></VueDatePicker>
     </div>
     <div class="col d-flex align-items-center">
