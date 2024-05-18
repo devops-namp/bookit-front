@@ -3,7 +3,7 @@
     <div class="container pt-4 pb-4 text-light">
       <form @submit.prevent="submitForm">
         <div class="small-container bg-secondary p-3 mx-auto">
-          <div class="form-group ">
+          <div class="form-group">
             <label for="property-name">Property Name</label>
             <div class="pl-5 pr-5">
               <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name"/>
@@ -104,12 +104,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="mt-2 pl-2">
-                  <img v-for="(image, index) in form.images" :key="index" :src="image" class="img-thumbnail thumbnail-image" @click="setMainImage(index)"/>
+                <div class="mt-2 d-flex flex-wrap justify-content-center">
+                  <div class="image-container pr-2 pb-2" v-for="(image, index) in form.images" :key="index">
+                    <img :src="image" class="img-thumbnail thumbnail-image" @click="setMainImage(index)"/>
+                    <button type="button" class="btn btn-danger btn-sm btn-delete-img btn-block mt-1" @click="removeImage(index)">Delete</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
           <button type="submit" class="btn btn-info btn-lg btn-block">Submit</button>
         </div>
       </form>
@@ -168,6 +172,9 @@ export default {
     removePriceAdjustment(index) {
       this.form.priceAdjustments.splice(index, 1);
     },
+    removeImage(index) {
+      this.form.images.splice(index, 1);
+    },
   },
 };
 </script>
@@ -194,4 +201,11 @@ export default {
   object-fit: cover;
 }
 
+.image-container {
+  position: relative;
+}
+
+.btn-delete-img {
+  width: 100px;
+}
 </style>
