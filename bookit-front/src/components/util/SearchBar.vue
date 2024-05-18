@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
   name: 'SearchBar',
   props: {
@@ -61,6 +63,11 @@ export default {
       allLocations: ['Belgrade', 'Novi Sad', 'Niš', 'Kopaonik', 'Zlatibor']
     };
   },
+  setup() {
+    const router = useRouter();
+
+    return { router };
+  },
   methods: {
     validateInput(field) {
       if (this[field] < 0) {
@@ -69,6 +76,7 @@ export default {
     },
     search_it(){
       console.log(this.filters,this.minPrice,this.maxPrice)
+      this.router.push({ path: '/search' });
     }
   }
 }
