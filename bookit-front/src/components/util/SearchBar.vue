@@ -35,7 +35,7 @@
       <label class="text-light ml-2">Rooms</label>
     </div>
     <div class="col-1 d-flex align-items-center justify-content-end">
-      <button class="btn btn-primary">Search</button>
+      <button class="btn btn-primary" @click="search_it">Search</button>
     </div>
   </div>
 </template>
@@ -43,6 +43,11 @@
 <script>
 export default {
   name: 'SearchBar',
+  props: {
+    filters: Object,
+    minPrice: Number,
+    maxPrice: Number
+  },
   data() {
     return {
       selectedLocation: '',
@@ -59,6 +64,9 @@ export default {
       if (this[field] < 0) {
         this[field] = 0;
       }
+    },
+    search_it(){
+      console.log(this.filters,this.minPrice,this.maxPrice)
     }
   }
 }
