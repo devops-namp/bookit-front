@@ -2,7 +2,10 @@
   <div class="bg-dark entire-div">
     <div class="container">
       <nav-bar />
-      <search-bar />
+      <search-bar 
+          :filters="filters"
+          :minPrice= "priceRange[0]"
+          :maxPrice= "priceRange[1]"/>
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="filter-section">
