@@ -31,18 +31,12 @@
 
           <div class="form-group">
             <label>Guests</label>
-            <div class="form-row">
-              <div class="pl-5 pr-5">
-                <div class="col d-flex mb-2 text-center">
-                  <label class="col">from:</label>
-                  <input type="number" class="form-control col-3" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
-                </div>
-                <div class="col d-flex text-center">
-                  <label class="col">to:</label>
-                  <input type="number" class="form-control col-3" v-model="form.maxGuests" min="1" required placeholder="Max Guests" />
-                </div>
+              <div class="pl-5 pr-5 d-flex align-content-center">
+                <label class="ml-5 pr-2">from:</label>
+                <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
+                <label class="pr-2 pl-2">to:</label>
+                <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests" />
               </div>
-            </div>
           </div>
 
           <div class="form-group">
