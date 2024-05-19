@@ -21,6 +21,7 @@ import SearchPage from './components/Search/SearchPage.vue'
 import PropertyListPage from './components/PropertyList/PropertyListPage.vue'
 import PropertyDetailPage from './components/PropertyDetail/PropertyDetailPage.vue'
 import ProfilePage from './components/Profile/ProfilePage.vue'
+import TripHistoryPage from './components/TripHistory/TripHistoryPage.vue'
 
 const routes = [
     {
@@ -50,6 +51,11 @@ const routes = [
     {
         path: "/profile",
         component: ProfilePage
+    }
+    ,
+    {
+        path: "/tripHistory",
+        component: TripHistoryPage
     }
 ]
 

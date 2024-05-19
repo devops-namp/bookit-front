@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-info btn-lg btn-block mt-4" @click="reserveProperty">
+        <button class="btn btn-info btn-lg btn-block mt-4" @click="reserveProperty" v-if="!fromTripHistory">
           Reserve
         </button>
       </div>
@@ -84,6 +84,11 @@ export default {
   components: {
     VueDatePicker,
     NavBar,
+  },
+  computed: {
+    fromTripHistory() {
+      return this.$route.query.fromTripHistory === 'true';
+    }
   },
   data() {
     return {
