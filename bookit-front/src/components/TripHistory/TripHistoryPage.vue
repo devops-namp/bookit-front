@@ -3,7 +3,7 @@
     <div class="container">
       <nav-bar />
       <div class="trip-history pt-5 d-flex justify-content-center">
-        <div class="trip-card" v-for="trip in trips" :key="trip.id" @click="openDetailedPropertyCard(trip.id)">
+        <div class="trip-card" v-for="trip in trips" :key="trip.id" @click="openDetailedPropertyCard(trip)">
           <img :src="trip.image" alt="Trip Image" class="trip-image">
           <div class="trip-details">
             <h5>{{ trip.name }}</h5>
