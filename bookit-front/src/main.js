@@ -20,6 +20,7 @@ import SignUpPage from './components/SignUp/SignUpPage.vue'
 import SearchPage from './components/Search/SearchPage.vue'
 import PropertyListPage from './components/PropertyList/PropertyListPage.vue'
 import PropertyDetailPage from './components/PropertyDetail/PropertyDetailPage.vue'
+import ProfilePage from './components/Profile/ProfilePage.vue'
 
 const routes = [
     {
@@ -45,6 +46,10 @@ const routes = [
     {
         path: "/propertyDetail",
         component: PropertyDetailPage
+    },
+    {
+        path: "/profile",
+        component: ProfilePage
     }
 ]
 
