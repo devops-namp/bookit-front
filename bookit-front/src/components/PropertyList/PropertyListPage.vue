@@ -7,21 +7,21 @@
       <form @submit.prevent="submitForm">
         <div class="small-container bg-secondary p-3 mx-auto">
           <div class="form-group">
-            <label for="property-name">Property Name</label>
+            <h5 for="property-name">Property Name</h5>
             <div class="pl-5 pr-5">
               <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name"/>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="property-location">Location</label>
+            <h5 for="property-location">Location</h5>
             <div class="pl-5 pr-5">
               <input type="text" class="form-control" id="property-location" v-model="form.location" required placeholder="Enter property location...  e.g. Novi Sad" />
             </div>
-          </div>
-
+          </div> 
+          
           <div class="form-group">
-            <label>Filters</label>
+            <h5>Filters</h5>
             <div class="pl-5 pr-5">
               <div class="d-flex flex-wrap">
                 <div class="form-check mr-3" v-for="filter in availableFilters" :key="filter">
@@ -33,7 +33,7 @@
           </div>
 
           <div class="form-group">
-            <label>Guests</label>
+            <h5>Guests</h5>
             <div class="pl-5 pr-5 d-flex align-content-center">
               <label class="ml-5 pr-2">from:</label>
               <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
@@ -43,7 +43,7 @@
           </div>
 
           <div class="form-group">
-            <label>Price Type</label>
+            <h5>Price Type</h5>
             <div class="d-flex justify-content-center">
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" id="price-per-unit" value="per-unit" v-model="form.priceType" required />
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Price Adjustments</label>
+            <h5>Price Adjustments</h5>
             <div class="pl-4 pr-4">
               <div v-for="(priceAdjustment, index) in form.priceAdjustments" :key="index" class="d-flex mb-2">
                 <VueDatePicker
@@ -78,7 +78,7 @@
           </div>
 
           <div class="form-group">
-            <label for="property-images">Images</label>
+            <h5 for="property-images">Images</h5>
             <div class="pl-5 pr-5">
               <input type="file" class="form-control-file" id="property-images" @change="onFileChange" multiple/>
             </div>
