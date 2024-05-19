@@ -8,6 +8,7 @@ import "bootstrap"
 import 'vue3-toastify/dist/index.css'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import moment from 'moment';
 
 
 import { faSuitcase } from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +19,7 @@ import LoginPage from './components/Login/LoginPage.vue'
 import SignUpPage from './components/SignUp/SignUpPage.vue'
 import SearchPage from './components/Search/SearchPage.vue'
 import PropertyListPage from './components/PropertyList/PropertyListPage.vue'
+import PropertyDetailPage from './components/PropertyDetail/PropertyDetailPage.vue'
 
 const routes = [
     {
@@ -39,6 +41,10 @@ const routes = [
     {
         path: "/propertyListing",
         component: PropertyListPage
+    },
+    {
+        path: "/propertyDetail",
+        component: PropertyDetailPage
     }
 ]
 
