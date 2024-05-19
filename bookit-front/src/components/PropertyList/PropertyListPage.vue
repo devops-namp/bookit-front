@@ -9,24 +9,24 @@
           <div class="form-group">
             <h5 for="property-name">Property Name</h5>
             <div class="pl-5 pr-5">
-              <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name"/>
+              <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name" />
             </div>
           </div>
 
           <div class="form-group">
             <h5 for="property-location">Location</h5>
             <div class="pl-5 pr-5">
-              <input type="text" class="form-control" id="property-location" v-model="form.location" required placeholder="Enter property location...  e.g. Novi Sad" />
+              <input type="text" class="form-control" id="property-location" v-model="form.location" required placeholder="Enter property location...  e.g. Novi Sad"/>
             </div>
-          </div> 
-          
+          </div>
+
           <div class="form-group">
             <h5>Filters</h5>
             <div class="pl-5 pr-5">
               <div class="d-flex flex-wrap">
                 <div class="form-check mr-3" v-for="filter in availableFilters" :key="filter">
-                  <input class="form-check-input" type="checkbox" :id="filter" :value="filter" v-model="form.filters"/>
-                  <label class="form-check-label" :for="filter">{{ filter }}</label>
+                  <input class="form-check-input" type="checkbox" :id="filter" :value="filter" v-model="form.filters" />
+                  <label class="form-check-label" :for="filter">{{filter}}</label>
                 </div>
               </div>
             </div>
@@ -38,7 +38,7 @@
               <label class="ml-5 pr-2">from:</label>
               <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
               <label class="pr-2 pl-2">to:</label>
-              <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests" />
+              <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests"/>
             </div>
           </div>
 
@@ -73,14 +73,14 @@
                 <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0" placeholder="Price (€)"/>
                 <button type="button" class="btn btn-danger" @click="removePriceAdjustment(index)">Remove</button>
               </div>
-              <button type="button" class="btn btn-success" @click="addPriceAdjustment">Add Price Adjustment</button>
+              <button type="button" class="btn btn-success" @click="addPriceAdjustment" > Add Price Adjustment </button>
             </div>
           </div>
 
           <div class="form-group">
             <h5 for="property-images">Images</h5>
             <div class="pl-5 pr-5">
-              <input type="file" class="form-control-file" id="property-images" @change="onFileChange" multiple/>
+              <input type="file" class="form-control-file" id="property-images" @change="onFileChange" multiple />
             </div>
             <div class="image-preview pt-3 d-flex align-items-center">
               <div v-if="form.images.length > 0">
@@ -94,14 +94,18 @@
                 <div class="mt-2 d-flex flex-wrap justify-content-center">
                   <div class="image-container pr-2 pb-2" v-for="(image, index) in form.images" :key="index">
                     <img :src="image" class="img-thumbnail thumbnail-image" @click="setMainImage(index)"/>
-                    <button type="button" class="btn btn-danger btn-sm btn-delete-img btn-block mt-1" @click="removeImage(index)">Delete</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-delete-img btn-block mt-1" @click="removeImage(index)">
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-info btn-lg btn-block">Submit</button>
+          <button type="submit" class="btn btn-info btn-lg btn-block">
+            Submit
+          </button>
         </div>
       </form>
     </div>
@@ -109,34 +113,40 @@
 </template>
 
 <script>
-import NavBar from '../util/NavBar.vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
+import NavBar from "../util/NavBar.vue";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  name: 'CreatePropertyListing',
+  name: "CreatePropertyListing",
   components: {
     VueDatePicker,
-    NavBar
+    NavBar,
   },
   data() {
     return {
       form: {
-        name: '',
-        location: '',
+        name: "",
+        location: "",
         filters: [],
         minGuests: 1,
         maxGuests: 1,
-        priceType: 'per-unit',
+        priceType: "per-unit",
         images: [],
         priceAdjustments: [],
       },
-      availableFilters: ['WiFi', 'Free Parking', 'Kitchen', 'Air Condition', 'Shared Toilet'],
+      availableFilters: [
+        "WiFi",
+        "Free Parking",
+        "Kitchen",
+        "Air Condition",
+        "Shared Toilet",
+      ],
     };
   },
   methods: {
     submitForm() {
-      console.log('Form submitted:', this.form);
+      console.log("Form submitted:", this.form);
     },
     onFileChange(event) {
       const files = event.target.files;

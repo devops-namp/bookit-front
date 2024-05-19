@@ -14,8 +14,7 @@
                         <a class="dropdown-item" href="#"><i class="bi bi-person-fill"/>&nbsp;Manage account</a>
                         <a class="dropdown-item" href="#"><font-awesome-icon icon="fa-solid fa-suitcase"/>&nbsp;Booking and trips</a>
                         <a class="dropdown-item" href="#"><i class="bi bi-person-hearts"/>&nbsp;Reviews</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"/>&nbsp;Sign out</a>
+                        <div class="dropdown-divider"></div> <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"/>&nbsp;Sign out</a>
                     </div>
                 </li>
             </ul>
