@@ -31,7 +31,7 @@
         </div>
         <div class="col-md-9">
           <div class="row">
-            <div class="col-md-4" v-for="result in searchResults" :key="result.id">
+            <div class="col-md-4 point-it" v-for="result in searchResults" :key="result.id" @click="openDetailedPropertyCard(result)">
               <result-card
                 :image="result.image"
                 :name="result.name"
@@ -151,6 +151,10 @@ export default {
         .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
         .replace(/^[a-z]/, match => match.toUpperCase())
         .trim();
+    },
+    openDetailedPropertyCard(trip) {
+      console.log(trip);
+      this.$router.push({ path: "/propertyDetail"});
     }
   },
   watch: {
@@ -170,6 +174,9 @@ export default {
 <style src="@vueform/slider/themes/default.css"></style>
 
 <style scoped>
+.point-it{
+  cursor: pointer;
+}
 .entire-div {
   min-height: 100vh;
 }
