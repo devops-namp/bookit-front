@@ -3,12 +3,14 @@
     <div class="container">
       <nav-bar />
       <div class="trip-history pt-5 d-flex justify-content-center">
-        <div class="trip-card" v-for="trip in trips" :key="trip.id" @click="openDetailedPropertyCard(trip)">
-          <img :src="trip.image" alt="Trip Image" class="trip-image">
-          <div class="trip-details">
+        <div class="trip-card" v-for="trip in trips" :key="trip.id">
+          <img :src="trip.image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
+          <div class="trip-details" @click="openDetailedPropertyCard(trip)">
             <h5>{{ trip.name }}</h5>
             <p>{{ trip.location }}</p>
             <p>{{ trip.date }}</p>
+          </div>
+          <div class="trip-details">
             <div class="ratings">
               <div>
                 <h6>Rate the Place</h6>
