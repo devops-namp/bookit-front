@@ -37,7 +37,7 @@
       <label class="text-light ml-2">Children</label>
     </div>
     <div class="col-1 d-flex align-items-center justify-content-end">
-      <button class="btn btn-primary" @click="search_it">Search</button>
+      <button class="btn btn-info" @click="search_it">Search</button>
     </div>
   </div>
 </template>

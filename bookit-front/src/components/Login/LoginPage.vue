@@ -18,7 +18,7 @@
                 <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password">
               </div>
               <div class="d-grid">
-                <button type="button" class="btn btn-primary btn-lg" @click="login">Login</button>
+                <button type="button" class="btn btn-info btn-lg" @click="login">Login</button>
               </div>
             </form>
           </div>
@@ -56,7 +56,7 @@ export default {
   border-radius: 15px;
   background: #f6f8fa;
 }
-.btn-primary {
+.btn-info {
   background-color: #1f883d;
   color: white;
 }

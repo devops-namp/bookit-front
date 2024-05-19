@@ -38,7 +38,7 @@
                 <input type="password" class="form-control" id="confirm-password" required placeholder="Repeat your password" v-model="confirmPassword">
               </div>
               <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                <button type="submit" class="btn btn-info btn-lg">Sign Up</button>
               </div>
             </form>
           </div>
@@ -92,7 +92,7 @@ export default {
   border-radius: 15px;
   background: #f6f8fa;
 }
-.btn-primary {
+.btn-info {
   background-color: #1f883d;
   color: white;
 }

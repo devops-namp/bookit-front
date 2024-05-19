@@ -8,7 +8,7 @@
             <ul class="navbar-nav mr-auto">
                 <li v-if="user" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Aleksa Simic
+                    {{user}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#"><i class="bi bi-person-fill"/>&nbsp;Manage account</a>
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-        user: ''
+        user: 'Aleksa Simic'
     };
   },
   methods: {
