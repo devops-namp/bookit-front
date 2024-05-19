@@ -1,9 +1,11 @@
 <template>
   <div class="row mt-3">
     <div class="col-2">
-      <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Location" v-model="selectedLocation">
+      <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Location" v-model="selectedLocation" />
       <datalist id="datalistOptions">
-        <option v-for="location in allLocations" :value="location" :key="location">{{ location }}</option>
+        <option v-for="location in allLocations" :value="location" :key="location" >
+          {{ location }}
+        </option>
       </datalist>
     </div>
     <div class="col-2">
@@ -13,7 +15,8 @@
         format="dd-MM-yyyy"
         :autoClose="true"
         :min-date="new Date()"
-        :enable-time-picker="false"></VueDatePicker>
+        :enable-time-picker="false"
+      ></VueDatePicker>
     </div>
     <div class="col-2">
       <VueDatePicker
@@ -22,19 +25,16 @@
         format="dd-MM-yyyy"
         :autoClose="true"
         :min-date="new Date()"
-        :enable-time-picker="false"></VueDatePicker>
+        :enable-time-picker="false"
+      ></VueDatePicker>
     </div>
     <div class="col d-flex align-items-center">
-      <input type="number" class="form-control" v-model.number="adults" @input="validateInput('adults')">
+      <input type="number" class="form-control" v-model.number="adults" @input="validateInput('adults')" />
       <label class="text-light ml-2">Adults</label>
     </div>
     <div class="col d-flex align-items-center">
-      <input type="number" class="form-control" v-model.number="children" @input="validateInput('children')">
+      <input type="number" class="form-control" v-model.number="children" @input="validateInput('children')"/>
       <label class="text-light ml-2">Children</label>
-    </div>
-    <div class="col d-flex align-items-center">
-      <input type="number" class="form-control" v-model.number="rooms" @input="validateInput('rooms')">
-      <label class="text-light ml-2">Rooms</label>
     </div>
     <div class="col-1 d-flex align-items-center justify-content-end">
       <button class="btn btn-primary" @click="search_it">Search</button>
@@ -43,24 +43,23 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 export default {
-  name: 'SearchBar',
+  name: "SearchBar",
   props: {
     filters: Object,
     minPrice: Number,
-    maxPrice: Number
+    maxPrice: Number,
   },
   data() {
     return {
-      selectedLocation: '',
-      startDate: '',
-      endDate: '',
+      selectedLocation: "",
+      startDate: "",
+      endDate: "",
       adults: 2,
       children: 0,
-      rooms: 1,
-      allLocations: ['Belgrade', 'Novi Sad', 'Niš', 'Kopaonik', 'Zlatibor']
+      allLocations: ["Belgrade", "Novi Sad", "Niš", "Kopaonik", "Zlatibor"],
     };
   },
   setup() {
@@ -74,12 +73,12 @@ export default {
         this[field] = 0;
       }
     },
-    search_it(){
-      console.log(this.filters,this.minPrice,this.maxPrice)
-      this.router.push({ path: '/search' });
-    }
-  }
-}
+    search_it() {
+      console.log(this.filters, this.minPrice, this.maxPrice);
+      this.router.push({ path: "/search" });
+    },
+  },
+};
 </script>
 
 <style scoped>
