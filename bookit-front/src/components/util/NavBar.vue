@@ -13,7 +13,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/profile"><i class="bi bi-person-fill"/>&nbsp;Manage account</a>
                         <a class="dropdown-item" href="/tripHistory"><font-awesome-icon icon="fa-solid fa-suitcase"/>&nbsp;Booking and trips</a>
-                        <a class="dropdown-item" href="#"><i class="bi bi-person-hearts"/>&nbsp;Reviews</a>
+                        <a class="dropdown-item" href="#"><i class="bi bi-person-hearts"/>&nbsp;Reservations</a>
                         <div class="dropdown-divider"></div> <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"/>&nbsp;Sign out</a>
                     </div>
                 </li>
