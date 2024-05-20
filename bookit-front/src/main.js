@@ -22,6 +22,7 @@ import PropertyListPage from './components/PropertyList/PropertyListPage.vue'
 import PropertyDetailPage from './components/PropertyDetail/PropertyDetailPage.vue'
 import ProfilePage from './components/Profile/ProfilePage.vue'
 import TripHistoryPage from './components/TripHistory/TripHistoryPage.vue'
+import MyReservationsPage from './components/Reservations/MyReservationPage.vue'
 
 const routes = [
     {
@@ -51,11 +52,14 @@ const routes = [
     {
         path: "/profile",
         component: ProfilePage
-    }
-    ,
+    },
     {
         path: "/tripHistory",
         component: TripHistoryPage
+    },
+    {
+        path: "/myReservations",
+        component: MyReservationsPage
     }
 ]
 
