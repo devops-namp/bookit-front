@@ -2,22 +2,25 @@
   <div class="bg-dark entire-div">
     <div class="container">
       <nav-bar />
-      <div class="reservations-list pt-5 d-flex flex-column align-items-center">
-        <h2 class="text-white mb-4">My Reservations</h2>
+      <div class="owner-reservations-list pt-5 d-flex flex-column align-items-center">
+        <h2 class="text-white mb-4">Manage Reservations</h2>
         <div class="reservation-card" v-for="reservation in reservations" :key="reservation.id">
-         <div class="d-flex justify-content-center p-5 col-4">
-          <img :src="reservation.image" alt="Reservation Image" class="reservation-image">
-         </div>
-         <div class="reservation-details col">
+          <div class="d-flex justify-content-center p-5 col-4">
+            <img :src="reservation.image" alt="Reservation Image" class="reservation-image">
+          </div>
+          <div class="reservation-details col">
             <h5>{{ reservation.name }}</h5>
             <p>{{ reservation.location }}</p>
             <p>{{ formatDate(reservation.startDate) }} to {{ formatDate(reservation.endDate) }}</p>
             <p>Status: <span :class="statusClass(reservation.status)">{{ reservation.status }}</span></p>
-            <button class="btn btn-danger" @click="cancelReservation(reservation.id)">Cancel Reservation</button>
-         </div>
-         <div class="col align-content-center text-center">
+            <div v-if="reservation.status === 'Pending'">
+              <button class="btn btn-success mr-2" @click="confirmReservation(reservation.id)">Confirm</button>
+              <button class="btn btn-danger" @click="declineReservation(reservation.id)">Decline</button>
+            </div>
+          </div>
+          <div class="col align-content-center text-center">
             <h3 class="price-h3">{{ reservation.price }}€</h3>
-         </div>
+          </div>
         </div>
       </div>
     </div>
@@ -28,7 +31,7 @@ import NavBar from "../util/NavBar.vue";
 import moment from "moment";
 
 export default {
-  name: "MyReservationPage",
+  name: "OwnerReservationsPage",
   components: {
     NavBar,
   },
@@ -41,8 +44,8 @@ export default {
           location: "Kopaonik",
           startDate: "2024-06-01",
           endDate: "2024-06-10",
-          status: "Accepted",
-          price:300,
+          status: "Pending",
+          price: 300,
           image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
         },
         {
@@ -51,18 +54,8 @@ export default {
           location: "Zlatibor",
           startDate: "2024-07-15",
           endDate: "2024-07-25",
-          status: "Declined",
-          price:250,
-          image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-        },
-        {
-          id: 3,
-          name: "Central Zlatar",
-          location: "Zlatibor",
-          startDate: "2024-07-15",
-          endDate: "2024-07-25",
           status: "Pending",
-          price:250,
+          price: 250,
           image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
         },
       ],
@@ -79,15 +72,29 @@ export default {
         'text-danger font-weight-bold': status === 'Declined'
       };
     },
-    cancelReservation(id) {
-      this.reservations = this.reservations.filter(reservation => reservation.id !== id);
-      alert('Reservation cancelled successfully.');
+    confirmReservation(id) {
+      this.reservations = this.reservations.map(reservation => {
+        if (reservation.id === id) {
+          reservation.status = 'Accepted';
+        }
+        return reservation;
+      });
+      alert('Reservation confirmed.');
+    },
+    declineReservation(id) {
+      this.reservations = this.reservations.map(reservation => {
+        if (reservation.id === id) {
+          reservation.status = 'Declined';
+        }
+        return reservation;
+      });
+      alert('Reservation declined.');
     }
   }
 };
 </script>
 <style scoped>
-.price-h3{
+.price-h3 {
   color: lightskyblue;
   font-size: xx-large;
   font-weight: 600;
@@ -98,7 +105,7 @@ export default {
   background-color: #343a40;
 }
 
-.reservations-list {
+.owner-reservations-list {
   width: 100%;
 }
 
@@ -133,5 +140,8 @@ export default {
 .text-warning {
   color: orange;
 }
-</style>
 
+.text-danger {
+  color: red;
+}
+</style>
