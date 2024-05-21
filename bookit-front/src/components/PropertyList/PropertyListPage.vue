@@ -144,8 +144,22 @@ export default {
       ],
     };
   },
+  created() {
+    const propertyId = this.$route.params.id;
+    console.log(`Property ID from route: ${propertyId}`);
+    const property = this.getPropertyById();
+    console.log(property);
+    if (property) {
+      this.form = {
+        ...property,
+        images: property.images || [],
+        priceAdjustments: property.priceAdjustments || []
+      };
+    }
+  },
   methods: {
     submitForm() {
+      console.log(this.form.priceAdjustments);
       console.log("Form submitted:", this.form);
     },
     onFileChange(event) {
@@ -172,7 +186,39 @@ export default {
     removeImage(index) {
       this.form.images.splice(index, 1);
     },
+    getPropertyById() {
+      const propertySent = 
+        {
+          id: 1,
+          name: "Central Konaci Apartments on APrtments on Apartments",
+          location: "Kopaonik",
+          filters: ["WiFi","Air Condition"],
+          minGuests: 1,
+          maxGuests: 6,
+          priceType: "per-unit",
+          images: [
+            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1"
+          ],
+          priceAdjustments: [
+            {
+              dates: [
+                new Date("2024-05-21T09:20:00"),
+                new Date("2024-05-31T09:20:00")
+              ],
+              price: 1555
+            },
+            {
+              dates: [
+                new Date("2024-05-21T09:20:00"),
+                new Date("2024-05-31T09:20:00")
+              ],
+              price: 1600
+            }
+          ]
+        }
+        return propertySent
   },
+  }
 };
 </script>
 
