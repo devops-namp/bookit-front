@@ -24,6 +24,7 @@ import ProfilePage from './components/Profile/ProfilePage.vue'
 import TripHistoryPage from './components/TripHistory/TripHistoryPage.vue'
 import MyReservationsPage from './components/Reservations/MyReservationPage.vue'
 import OwnerReservationsPage from './components/Reservations/OwnerReservationsPage.vue'
+import MyPropertiesPage from './components/Property/MyPropertiesPage.vue'
 
 const routes = [
     {
@@ -65,6 +66,14 @@ const routes = [
     {
         path: "/ownerReservations",
         component: OwnerReservationsPage
+    },
+    {
+        path: "/myProperties",
+        component: MyPropertiesPage
+    },
+    {
+        path: "/updateProperty/:id",
+        component: PropertyListPage,
     }
 ]
 
