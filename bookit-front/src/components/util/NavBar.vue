@@ -15,6 +15,7 @@
                         <a class="dropdown-item" href="/tripHistory"><font-awesome-icon icon="fa-solid fa-suitcase"/>&nbsp;Booking and trips</a>
                         <a class="dropdown-item" href="/myReservations"><i class="bi bi-person-hearts"/>&nbsp;Reservations</a>
                         <a class="dropdown-item" href="/ownerReservations"><i class="bi bi-ticket-perforated"/>&nbsp;Manage reservations</a>
+                        <a class="dropdown-item" href="/myProperties"><i class="bi bi-houses"/>&nbsp;Manage properties</a>
                         <div class="dropdown-divider"></div> <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"/>&nbsp;Sign out</a>
                     </div>
                 </li>
