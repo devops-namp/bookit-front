@@ -6,7 +6,11 @@
           :filters="filters"
           :minPrice= "priceRange[0]"
           :maxPrice= "priceRange[1]"
-          :selectedLocation="selectedLocation"/>
+          :selectedLocation="selectedLocation"
+          :startDate="startDate"
+          :endDate="endDate"
+          :adults="adults"
+          :children="children"/>
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="filter-section">
@@ -67,8 +71,21 @@ export default {
   },
   created() {
     const route = useRoute();
-    if (route.query.location) {
-      this.selectedLocation = route.query.location;
+    console.log(route.query);
+    if (route.query.selectedLocation) {
+      this.selectedLocation = route.query.selectedLocation;
+    }
+    if (route.query.startDate) {
+      this.startDate = new Date(route.query.startDate);
+    }
+    if (route.query.endDate) {
+      this.endDate = new Date(route.query.endDate);
+    }
+    if (route.query.adults) {
+      this.adults = Number(route.query.adults);
+    }
+    if (route.query.children) {
+      this.children = Number(route.query.children);
     }
   },
   data() {
@@ -147,7 +164,11 @@ export default {
           price: 200
         },
       ],
-      selectedLocation: ''
+      selectedLocation: '',
+      startDate: null,
+      endDate: null,
+      adults: 2,
+      children: 0
     };
   },
   methods: {
