@@ -1,56 +1,91 @@
 <template>
-<div class="bg-dark entire-div">
-  <div class="container pt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-7">
-        <div class="card bg-secondary text-light">
-          <div class="card-header text-center fw-bold header-title">
-            Sign Up for BookIt
-          </div>
-          <div class="card-body">
-            <form @submit.prevent="signup">
-              <div class="mb-3">
-                <label for="first-name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first-name" required placeholder="Enter your first name" v-model="firstName">
-              </div>
-              <div class="mb-3">
-                <label for="last-name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last-name" required placeholder="Enter your last name" v-model="lastName">
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" required placeholder="Enter your email" v-model="email">
-              </div>
-              <div class="mb-3">
-                <label for="place-of-living" class="form-label">Place of Living</label>
-                <input type="text" class="form-control" id="place-of-living" required placeholder="Enter your place of living" v-model="placeOfLiving">
-              </div>
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" required placeholder="Choose a username" v-model="username">
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" required placeholder="Enter your password" v-model="password">
-              </div>
-              <div class="mb-3">
-                <label for="confirm-password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm-password" required placeholder="Repeat your password" v-model="confirmPassword">
-              </div>
-              <div class="d-grid">
-                <button type="submit" class="btn btn-info btn-lg">Sign Up</button>
-              </div>
-            </form>
-          </div>
-          <div class="card-footer text-center">
-            <span class="me-1">Already have an account? </span>
-            <router-link to="/" class="fw-bolder text-info">Login here</router-link>
+  <div class="bg-dark entire-div">
+    <div class="container pt-5 w-50">
+      <div class="row justify-content-center">
+        <div class="col-md-7">
+          <div class="card bg-secondary text-light">
+            <div class="card-header text-center fw-bold header-title">
+              Sign Up for BookIt
+            </div>
+            <div class="card-body">
+              <form @submit.prevent="signup">
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-person-vcard icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="first-name" class="form-label font-weight-bold">First Name</label>
+                    <input type="text" class="form-control" id="first-name" required placeholder="Enter your first name" v-model="firstName">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-person-vcard icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="last-name" class="form-label font-weight-bold">Last Name</label>
+                    <input type="text" class="form-control" id="last-name" required placeholder="Enter your last name" v-model="lastName">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-envelope icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="email" class="form-label font-weight-bold">Email Address</label>
+                    <input type="email" class="form-control" id="email" required placeholder="Enter your email" v-model="email">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-house icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="place-of-living" class="form-label font-weight-bold">Place of Living</label>
+                    <input type="text" class="form-control" id="place-of-living" required placeholder="Enter your place of living" v-model="placeOfLiving">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-person icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="username" class="form-label font-weight-bold">Username</label>
+                    <input type="text" class="form-control" id="username" required placeholder="Choose a username" v-model="username">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-braces-asterisk icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="password" class="form-label font-weight-bold">Password</label>
+                    <input type="password" class="form-control" id="password" required placeholder="Enter your password" v-model="password">
+                  </div>
+                </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-braces-asterisk icon-large"></i>
+                  </div>
+                  <div class="col pr-5">
+                    <label for="confirm-password" class="form-label font-weight-bold">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm-password" required placeholder="Repeat your password" v-model="confirmPassword">
+                  </div>
+                </div>
+                <div class="d-grid pt-4">
+                  <button type="submit" class="btn btn-info btn-lg btn-block">Sign Up</button>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-center">
+              <span class="me-1">Already have an account? </span>
+              <router-link to="/" class="fw-bolder text-info">Login here</router-link>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -76,10 +111,10 @@ export default {
     signup() {
       if (!this.checkPasswords()) {
         toast("Passwords do not match!", {
-                        autoClose: 2000,
-                        type: 'error',
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
+          autoClose: 2000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
         return;
       }
     }
@@ -102,5 +137,8 @@ export default {
 }
 .entire-div {
   min-height: 100vh;
+}
+.icon-large {
+  font-size: 2rem;
 }
 </style>
