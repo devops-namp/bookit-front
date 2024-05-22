@@ -27,9 +27,10 @@
               <button class="btn btn-danger" @click="declineReservation(reservation.id)" v-if="!autoAccept">Decline</button>
             </div>
           </div>
-          <div class="col align-content-center text-center">
-            <h3 class="price-h3">{{ reservation.price }}€</h3> *in full
-            <h3 class="pricePer-h3 pt-5">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}
+          <div class="col align-content-center text-center p-3">
+            <h3 class="price-h3">{{ reservation.price }}€</h3> *in full <hr class="m-0">
+            <h3 class="pricePer-h3 pt-4">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}<hr class="m-0">
+            <h3 class="cancelations-h3 pt-4">{{reservation.numberOfCancelations}}</h3> *users previos cancelations
           </div>
         </div>
       </div>
@@ -63,6 +64,7 @@ export default {
         price: 300,
         pricePer: 10,
         priceType: "price-per-person",
+        numberOfCancelations: 0,
         image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
       },
       {
@@ -77,6 +79,7 @@ export default {
         price: 250,
         pricePer: 30,
         priceType: "price-per-unit",
+        numberOfCancelations: 10,
         image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
       },
     ]);
@@ -139,6 +142,11 @@ export default {
 </script>
 
 <style scoped>
+.cancelations-h3 {
+  font-size: xx-large;
+  font-weight: 600;
+}
+
 .price-h3 {
   color: lightskyblue;
   font-size: xx-large;
@@ -147,7 +155,7 @@ export default {
 
 .pricePer-h3 {
   color: lightgreen;
-  font-size: larger;
+  font-size: xx-large;
   font-weight: 600;
 }
 
