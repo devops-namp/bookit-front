@@ -11,7 +11,7 @@
           <div class="property-details col-3">
             <h6 class="h6-name">{{ property.name }}</h6>
             <p>{{ property.location }}</p>
-            <p>Price type: <b class="price-p">{{ property.priceType }}</b></p>
+            <p>Price type: <b class="price-p">{{ formatPriceType(property.priceType) }}</b></p>
             <button class="btn btn-danger" @click="removeProperty(property.id)">Remove property</button>
           </div>
           <div class="property-details col">
@@ -50,7 +50,7 @@ export default {
           filters: [],
           minGuests: 1,
           maxGuests: 1,
-          priceType: "per-unit",
+          priceType: "price-per-unit",
           images: [
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551077088.jpg?k=9de972a17f808f2f55930ca0538846e2383f3a2041934decd50fa69691453a07&o=&hp=1",
@@ -77,7 +77,7 @@ export default {
         filters: [],
         minGuests: 1,
         maxGuests: 1,
-        priceType: "per-unit",
+        priceType: "price-per-unit",
         images: [
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551077088.jpg?k=9de972a17f808f2f55930ca0538846e2383f3a2041934decd50fa69691453a07&o=&hp=1",
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/554520536.jpg?k=4c3d970eed45c89579f39ca1e109dd01a31b12dbbd34f1fa417934fd919496dc&o=&hp=1",
@@ -114,6 +114,9 @@ export default {
     };
   },
   methods: {
+    formatPriceType(priceType){
+      return priceType.replace('price-','').replace('-',' ')
+    },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
     },
