@@ -15,7 +15,8 @@
         </li>
       </ul>
       <p class="card-text mb-0"><strong>Guests:</strong> {{ minGuests }} - {{ maxGuests }}</p>
-      <label class="card-text"><strong>Price:</strong> {{ price }}€</label>
+      <label class="card-text mb-0"><strong>Price:</strong> {{ price }}€ (in full)</label>
+      <label class="card-text"><strong>Price:</strong> {{ pricePer }}€ ({{formatPriceType(priceType)}})</label>
     </div>
   </div>
 </template>
@@ -30,9 +31,14 @@ export default {
     filters: Object,
     minGuests: Number,
     maxGuests: Number,
-    price: Number
+    price: Number,
+    pricePer: Number,
+    priceType: String,
   },
   methods: {
+    formatPriceType(priceType){
+      return priceType.replace('-',' ').replace('-',' ')
+    },
     filterFormat(filter) {
       return filter
         .replace(/([a-z])([A-Z])/g, '$1 $2')

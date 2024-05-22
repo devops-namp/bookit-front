@@ -25,6 +25,7 @@ import TripHistoryPage from './components/TripHistory/TripHistoryPage.vue'
 import MyReservationsPage from './components/Reservations/MyReservationPage.vue'
 import OwnerReservationsPage from './components/Reservations/OwnerReservationsPage.vue'
 import MyPropertiesPage from './components/Property/MyPropertiesPage.vue'
+import NotificationPage from './components/Main/NotificationPage.vue'
 
 const routes = [
     {
@@ -74,6 +75,10 @@ const routes = [
     {
         path: "/updateProperty/:id",
         component: PropertyListPage,
+    },
+    {
+        path: "//notificationSettings",
+        component: NotificationPage,
     }
 ]
 

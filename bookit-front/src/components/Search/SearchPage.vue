@@ -5,7 +5,12 @@
       <search-bar 
           :filters="filters"
           :minPrice= "priceRange[0]"
-          :maxPrice= "priceRange[1]"/>
+          :maxPrice= "priceRange[1]"
+          :selectedLocation="selectedLocation"
+          :startDate="startDate"
+          :endDate="endDate"
+          :adults="adults"
+          :children="children"/>
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="filter-section">
@@ -40,6 +45,8 @@
                 :minGuests="result.minGuests"
                 :maxGuests="result.maxGuests"
                 :price="result.price"
+                :pricePer="result.pricePer"
+                :priceType="result.priceType"
               />
             </div>
           </div>
@@ -54,6 +61,7 @@ import NavBar from '../util/NavBar.vue';
 import SearchBar from '../util/SearchBar.vue';
 import Slider from '@vueform/slider';
 import ResultCard from './ResultCard.vue';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'SearchPage',
@@ -62,6 +70,25 @@ export default {
     SearchBar,
     Slider,
     ResultCard
+  },
+  created() {
+    const route = useRoute();
+    console.log(route.query);
+    if (route.query.selectedLocation) {
+      this.selectedLocation = route.query.selectedLocation;
+    }
+    if (route.query.startDate) {
+      this.startDate = new Date(route.query.startDate);
+    }
+    if (route.query.endDate) {
+      this.endDate = new Date(route.query.endDate);
+    }
+    if (route.query.adults) {
+      this.adults = Number(route.query.adults);
+    }
+    if (route.query.children) {
+      this.children = Number(route.query.children);
+    }
   },
   data() {
     return {
@@ -73,6 +100,11 @@ export default {
         freeParking: false,
         sharedToilet: false,
       },
+      selectedLocation: '',
+      startDate: null,
+      endDate: null,
+      adults: 2,
+      children: 0,
       searchResults: [
         {
           id: 1,
@@ -88,7 +120,9 @@ export default {
           },
           minGuests: 2,
           maxGuests: 4,
-          price: 150
+          price: 150,
+          priceType: "price-per-unit",
+          pricePer:115
         },
         {
           id: 2,
@@ -104,7 +138,9 @@ export default {
           },
           minGuests: 1,
           maxGuests: 3,
-          price: 120
+          price: 120,
+          priceType: "price-per-person",
+          pricePer:20
         },
         {
           id: 3,
@@ -120,7 +156,9 @@ export default {
           },
           minGuests: 2,
           maxGuests: 3,
-          price: 210
+          price: 210,
+          priceType: "price-per-unit",
+          pricePer:32
         },
         {
           id: 4,
@@ -136,7 +174,9 @@ export default {
           },
           minGuests: 1,
           maxGuests: 4,
-          price: 200
+          price: 200,
+          priceType: "price-per-person",
+          pricePer:10
         },
       ]
     };

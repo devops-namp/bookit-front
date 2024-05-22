@@ -20,9 +20,11 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
           </a>
         </div>
+        
         <div class="property-info mt-4">
-          <div class="d-flex justify-content-end">
-              <h3 class="price-h3">{{property.price}}€</h3>
+          <div class="d-flex justify-content-center">
+              <h3 class="price-h3">{{property.price}}€</h3> *in full
+              <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}}
           </div>
           <h3>Details</h3>
           <p><strong>Location:</strong> {{ property.location }}</p>
@@ -65,9 +67,30 @@
             </div>
           </div>
         </div>
+        
         <button class="btn btn-info btn-lg btn-block mt-4" @click="reserveProperty" v-if="!fromTripHistory">
           Reserve
         </button>
+
+        <div class="ratings mt-5">
+          <h3 class="text-center">Average Ratings</h3>
+          <p class="text-center"><strong>Host:</strong> {{ averageHostRating }} / 5</p>
+          <p class="text-center"><strong>Property:</strong> {{ averagePropertyRating }} / 5</p>
+        </div>
+
+        <div class="reviews mt-5">
+          <h3 class="text-center">Reviews</h3>
+          <div class="row">
+            <div v-for="review in reviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
+              <div class="card-body bg-card-review">
+                <p class="card-text"><strong>Rating:</strong> {{ review.rating }} / 5</p>
+                <p class="card-text"><strong>Date:</strong> {{ formatDate(review.date) }}</p>
+                <p class="card-text"><strong>User:</strong> {{ review.user.firstName }} {{ review.user.lastName }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -88,6 +111,14 @@ export default {
   computed: {
     fromTripHistory() {
       return this.$route.query.fromTripHistory === 'true';
+    },
+    averageHostRating() {
+      const total = this.reviews.reduce((sum, review) => sum + review.hostRating, 0);
+      return (total / this.reviews.length).toFixed(1);
+    },
+    averagePropertyRating() {
+      const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+      return (total / this.reviews.length).toFixed(1);
     }
   },
   data() {
@@ -100,6 +131,8 @@ export default {
         location: "Kopaonik",
         filters: ["WiFi", "Free Parking", "Kitchen"],
         price: 300,
+        priceType: "price-per-person",
+        pricePer: 150,
         minGuests: 1,
         maxGuests: 5,
         images: [
@@ -112,9 +145,56 @@ export default {
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/554520909.jpg?k=f061149dd59c7a7a4fe9c51440f24eff26d009668f0704d9b7348482f3aef981&o=&hp=1",
         ]
       },
+      reviews: [
+        {
+          id: 1,
+          rating: 5,
+          hostRating: 5,
+          date: "2023-05-21",
+          user: { firstName: "Branko", lastName: "Brankic" }
+        },
+        {
+          id: 2,
+          rating: 4,
+          hostRating: 4,
+          date: "2023-06-10",
+          user: { firstName: "Janko", lastName: "Jankic" }
+        },
+        {
+          id: 3,
+          rating: 5,
+          hostRating: 5,
+          date: "2023-05-21",
+          user: { firstName: "Branko", lastName: "Brankic" }
+        },
+        {
+          id: 4,
+          rating: 4,
+          hostRating: 4,
+          date: "2023-06-10",
+          user: { firstName: "Janko", lastName: "Jankic" }
+        },
+        {
+          id: 5,
+          rating: 5,
+          hostRating: 5,
+          date: "2023-05-21",
+          user: { firstName: "Branko", lastName: "Brankic" }
+        },
+        {
+          id: 6,
+          rating: 4,
+          hostRating: 4,
+          date: "2023-06-10",
+          user: { firstName: "Janko", lastName: "Jankic" }
+        },
+      ],
     };
   },
   methods: {
+    formatPriceType(priceType){
+      return priceType.replace('price-','').replace('-',' ')
+    },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
     },
@@ -127,6 +207,15 @@ export default {
 </script>
 
 <style scoped>
+.bg-card-review-above-div{
+  background: lightyellow;
+  color: black;
+  border: 2px solid blue;
+}
+
+.bg-card-review{
+  color: black;
+}
 .entire-div {
   min-height: 100vh;
   background-color: #f8f9fa;
@@ -147,5 +236,19 @@ export default {
   color: lightskyblue;
   font-size: xx-large;
   font-weight: 600;
+}
+
+.pricePer-h3{
+  color: lightgreen;
+  font-size: larger;
+  font-weight: 600;
+}
+
+.ratings, .reviews {
+  margin-top: 2rem;
+}
+
+.review-item {
+  border-radius: 5px;
 }
 </style>
