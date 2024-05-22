@@ -5,7 +5,8 @@
       <search-bar 
           :filters="filters"
           :minPrice= "priceRange[0]"
-          :maxPrice= "priceRange[1]"/>
+          :maxPrice= "priceRange[1]"
+          :selectedLocation="selectedLocation"/>
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="filter-section">
@@ -54,6 +55,7 @@ import NavBar from '../util/NavBar.vue';
 import SearchBar from '../util/SearchBar.vue';
 import Slider from '@vueform/slider';
 import ResultCard from './ResultCard.vue';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'SearchPage',
@@ -62,6 +64,12 @@ export default {
     SearchBar,
     Slider,
     ResultCard
+  },
+  created() {
+    const route = useRoute();
+    if (route.query.location) {
+      this.selectedLocation = route.query.location;
+    }
   },
   data() {
     return {
@@ -138,7 +146,8 @@ export default {
           maxGuests: 4,
           price: 200
         },
-      ]
+      ],
+      selectedLocation: ''
     };
   },
   methods: {

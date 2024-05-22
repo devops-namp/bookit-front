@@ -51,10 +51,11 @@ export default {
     filters: Object,
     minPrice: Number,
     maxPrice: Number,
+    selectedLocation: String
   },
   data() {
     return {
-      selectedLocation: "",
+      selectedLocation: this.selectedLocation || "",
       startDate: "",
       endDate: "",
       adults: 2,
