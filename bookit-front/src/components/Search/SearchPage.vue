@@ -45,6 +45,8 @@
                 :minGuests="result.minGuests"
                 :maxGuests="result.maxGuests"
                 :price="result.price"
+                :pricePer="result.pricePer"
+                :priceType="result.priceType"
               />
             </div>
           </div>
@@ -98,6 +100,11 @@ export default {
         freeParking: false,
         sharedToilet: false,
       },
+      selectedLocation: '',
+      startDate: null,
+      endDate: null,
+      adults: 2,
+      children: 0,
       searchResults: [
         {
           id: 1,
@@ -113,7 +120,9 @@ export default {
           },
           minGuests: 2,
           maxGuests: 4,
-          price: 150
+          price: 150,
+          priceType: "price-per-unit",
+          pricePer:115
         },
         {
           id: 2,
@@ -129,7 +138,9 @@ export default {
           },
           minGuests: 1,
           maxGuests: 3,
-          price: 120
+          price: 120,
+          priceType: "price-per-person",
+          pricePer:20
         },
         {
           id: 3,
@@ -145,7 +156,9 @@ export default {
           },
           minGuests: 2,
           maxGuests: 3,
-          price: 210
+          price: 210,
+          priceType: "price-per-unit",
+          pricePer:32
         },
         {
           id: 4,
@@ -161,14 +174,11 @@ export default {
           },
           minGuests: 1,
           maxGuests: 4,
-          price: 200
+          price: 200,
+          priceType: "price-per-person",
+          pricePer:10
         },
-      ],
-      selectedLocation: '',
-      startDate: null,
-      endDate: null,
-      adults: 2,
-      children: 0
+      ]
     };
   },
   methods: {
