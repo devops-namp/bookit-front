@@ -210,7 +210,7 @@ export default {
 .bg-card-review-above-div{
   background: lightyellow;
   color: black;
-  border: 2px solid lightblue;
+  border: 2px solid blue;
 }
 
 .bg-card-review{
