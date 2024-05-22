@@ -21,8 +21,9 @@
           </a>
         </div>
         <div class="property-info mt-4">
-          <div class="d-flex justify-content-end">
-              <h3 class="price-h3">{{property.price}}€</h3>
+          <div class="d-flex justify-content-center">
+              <h3 class="price-h3">{{property.price}}€</h3> *in full
+              <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}}
           </div>
           <h3>Details</h3>
           <p><strong>Location:</strong> {{ property.location }}</p>
@@ -100,6 +101,8 @@ export default {
         location: "Kopaonik",
         filters: ["WiFi", "Free Parking", "Kitchen"],
         price: 300,
+        priceType: "price-per-person",
+        pricePer: 150,
         minGuests: 1,
         maxGuests: 5,
         images: [
@@ -115,6 +118,9 @@ export default {
     };
   },
   methods: {
+    formatPriceType(priceType){
+      return priceType.replace('price-','').replace('-',' ')
+    },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
     },
@@ -146,6 +152,12 @@ export default {
 .price-h3{
   color: lightskyblue;
   font-size: xx-large;
+  font-weight: 600;
+}
+
+.pricePer-h3{
+  color: lightgreen;
+  font-size: larger;
   font-weight: 600;
 }
 </style>
