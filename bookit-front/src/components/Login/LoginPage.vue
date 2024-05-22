@@ -1,36 +1,41 @@
 <template>
-<div class="bg-dark entire-div">
-  <div class="container pt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-7">
-        <div class="card bg-secondary text-light">
-          <div class="card-header text-center fw-bold header-title">
-            Welcome to BookIt
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email">
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password">
-              </div>
-              <div class="d-grid">
-                <button type="button" class="btn btn-info btn-lg" @click="login">Login</button>
-              </div>
-            </form>
-          </div>
-          <div class="card-footer text-center">
-            <span class="me-1">Don't have an account? </span>
-            <router-link to="/signup" class="fw-bolder text-info">Sign up here</router-link>
+  <div class="bg-dark entire-div">
+    <div class="container pt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-7">
+          <div class="card bg-secondary text-light">
+            <div class="card-header text-center fw-bold header-title">
+              Welcome to BookIt
+            </div>
+            <div class="card-body">
+              <form class="row">
+                <div class="col-md-4 d-flex align-items-center">
+                  <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" alt="Trip and Book" class="img-fluid" />
+                </div>
+                <div class="col-md-8">
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password">
+                  </div>
+                  <div class="pt-3">
+                    <button type="button" class="btn btn-info btn-lg btn-block" @click="login">Login</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-center">
+              <span class="me-1">Don't have an account? </span>
+              <router-link to="/signup" class="fw-bolder text-info">Sign up here</router-link>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
