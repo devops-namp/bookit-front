@@ -149,7 +149,7 @@ export default {
     console.log(`Property ID from route: ${propertyId}`);
     const property = this.getPropertyById();
     console.log(property);
-    if (property) {
+    if (propertyId) {
       this.form = {
         ...property,
         images: property.images || [],

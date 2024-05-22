@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     generateSearchUrl(location) {
-      return `/search?location=${encodeURIComponent(location)}`;
+      return `/search?selectedLocation=${encodeURIComponent(location)}`;
     }
   },
 };
