@@ -10,16 +10,18 @@
           </div>
           <div class="reservation-details col">
             <h5>{{ reservation.name }}</h5>
-            <p>{{ reservation.location }}</p>
-            <p>{{ formatDate(reservation.startDate) }} to {{ formatDate(reservation.endDate) }}</p>
-            <p>Status: <span :class="statusClass(reservation.status)">{{ reservation.status }}</span></p>
+            <label>{{ reservation.location }}</label>
+            <label>{{ formatDate(reservation.startDate) }} to {{ formatDate(reservation.endDate) }}</label>
+            <label>Status: <span :class="statusClass(reservation.status)">{{ reservation.status }}</span></label>
+            <label>Adults: {{ reservation.adults }}&nbsp;&nbsp; Children: {{ reservation.children }}</label>
             <div v-if="reservation.status === 'Pending'">
               <button class="btn btn-success mr-2" @click="confirmReservation(reservation.id)">Confirm</button>
               <button class="btn btn-danger" @click="declineReservation(reservation.id)">Decline</button>
             </div>
           </div>
           <div class="col align-content-center text-center">
-            <h3 class="price-h3">{{ reservation.price }}€</h3>
+            <h3 class="price-h3">{{ reservation.price }}€</h3> *in full
+            <h3 class="pricePer-h3 pt-5">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}
           </div>
         </div>
       </div>
@@ -45,7 +47,11 @@ export default {
           startDate: "2024-06-01",
           endDate: "2024-06-10",
           status: "Pending",
+          adults: 2,
+          children: 6,
           price: 300,
+          pricePer:10,
+          priceType: "price-per-person",
           image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
         },
         {
@@ -55,13 +61,20 @@ export default {
           startDate: "2024-07-15",
           endDate: "2024-07-25",
           status: "Pending",
+          adults: 1,
+          children: 2,
           price: 250,
+          pricePer:30,
+          priceType: "price-per-unit",
           image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
         },
       ],
     };
   },
   methods: {
+    formatPriceType(priceType){
+      return priceType.replace('price-','').replace('-',' ')
+    },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
     },
@@ -97,6 +110,12 @@ export default {
 .price-h3 {
   color: lightskyblue;
   font-size: xx-large;
+  font-weight: 600;
+}
+
+.pricePer-h3{
+  color: lightgreen;
+  font-size: larger;
   font-weight: 600;
 }
 
