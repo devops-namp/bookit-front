@@ -14,8 +14,8 @@
                 </div>
                 <div class="col-md-8">
                   <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="username" class="form-control" id="username" placeholder="Enter your username" v-model="username">
                   </div>
                   <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
@@ -39,18 +39,30 @@
 </template>
 
 <script>
+import AuthService from '@/service/AuthService';
+import { toast } from 'vue3-toastify';
+
 export default {
   name: 'LoginPage',
   data() {
     return {
-      email: '',
+      username: '',
       password: ''
     }
   },
   methods: {
     login() {
-      console.log('Email:', this.email);
-      console.log('Password:', this.password);
+      AuthService.login(this.username, this.password).then(res => {
+        const token = res.data.token;
+        localStorage.setItem("access_token", token);
+        this.$router.push("/main");
+      }).catch(_err => {
+        toast("Invalid credentials!", {
+          autoClose: 1000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      });
     }
   }
 }
