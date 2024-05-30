@@ -8,4 +8,12 @@ const confirmRegistration = (payload) => {
     return api.post('/users/confirm', payload)
 }
 
-export default { register, confirmRegistration };
+const updateProfile = (username, payload) => {
+    return api.put(`/users/${username}`, payload);
+}
+
+const getUser = (username) => {
+    return api.get(`/users/${username}`);
+}
+
+export default { register, confirmRegistration, updateProfile, getUser };
