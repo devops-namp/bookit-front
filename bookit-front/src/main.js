@@ -27,6 +27,7 @@ import OwnerReservationsPage from './components/Reservations/OwnerReservationsPa
 import MyPropertiesPage from './components/Property/MyPropertiesPage.vue'
 import NotificationPage from './components/Main/NotificationPage.vue'
 import ConfirmationCodePage from './components/SignUp/ConfirmationCodePage.vue'
+import ChangePasswordPage from './components/Profile/ChangePasswordPage.vue'
 
 const routes = [
     {
@@ -82,8 +83,12 @@ const routes = [
         component: PropertyListPage,
     },
     {
-        path: "//notificationSettings",
+        path: "/notificationSettings",
         component: NotificationPage,
+    },
+    {
+        path: "/password",
+        component: ChangePasswordPage
     }
 ]
 
