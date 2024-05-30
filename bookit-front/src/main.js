@@ -26,6 +26,7 @@ import MyReservationsPage from './components/Reservations/MyReservationPage.vue'
 import OwnerReservationsPage from './components/Reservations/OwnerReservationsPage.vue'
 import MyPropertiesPage from './components/Property/MyPropertiesPage.vue'
 import NotificationPage from './components/Main/NotificationPage.vue'
+import ConfirmationCodePage from './components/SignUp/ConfirmationCodePage.vue'
 
 const routes = [
     {
@@ -39,6 +40,10 @@ const routes = [
     {
         path: "/signup",
         component: SignUpPage
+    },
+    {
+        path: "/signup/confirm",
+        component: ConfirmationCodePage
     },
     {
         path: "/search",

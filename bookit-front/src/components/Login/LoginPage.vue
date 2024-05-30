@@ -52,9 +52,11 @@ export default {
   },
   methods: {
     login() {
+      localStorage.clear();
       AuthService.login(this.username, this.password).then(res => {
         const token = res.data.token;
         localStorage.setItem("access_token", token);
+        localStorage.setItem("username", this.username);
         this.$router.push("/main");
       }).catch(_err => {
         toast("Invalid credentials!", {
