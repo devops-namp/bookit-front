@@ -72,6 +72,18 @@
                     <input type="password" class="form-control" id="confirm-password" required placeholder="Repeat your password" v-model="confirmPassword">
                   </div>
                 </div>
+                <div class="mb-3 row align-items-center">
+                  <div class="col-auto">
+                    <i class="bi bi-person-fill-gear icon-large"></i>
+                  </div>
+                  <div class="col pr-5 d-flex flex-column">
+                    <label for="role" class="form-label font-weight-bold">Role</label>
+                    <select class="form-select" id="role" v-model="role">
+                      <option selected>Guest</option>
+                      <option>Host</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="d-grid pt-4">
                   <button type="submit" class="btn btn-info btn-lg btn-block">Sign Up</button>
                 </div>
@@ -89,6 +101,7 @@
 </template>
 
 <script>
+import UserService from '@/service/UserService'
 import { toast } from 'vue3-toastify';
 
 export default {
@@ -101,7 +114,8 @@ export default {
       placeOfLiving: '',
       username: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      role: 'Guest'
     }
   },
   methods: {
@@ -117,6 +131,26 @@ export default {
         });
         return;
       }
+      let payload = {
+        "username": this.username,
+        "password": this.password,
+        "email": this.email,
+        "firstName": this.firstName,
+        "lastName": this.lastName,
+        "city": this.placeOfLiving,
+        "role": this.role.toUpperCase()
+      };
+      localStorage.clear();
+      localStorage.setItem("email", this.email);
+      UserService.register(payload).then(_res => {
+        this.$router.push('/signup/confirm');
+      }).catch(err => {
+        toast(err.response.data, {
+          autoClose: 1000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      })
     }
   }
 }
@@ -140,5 +174,8 @@ export default {
 }
 .icon-large {
   font-size: 2rem;
+}
+select {
+  height: 2.5rem;
 }
 </style>
