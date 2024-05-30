@@ -16,6 +16,7 @@
             <a class="dropdown-item" href="/myReservations"><i class="bi bi-person-hearts"></i>&nbsp;Reservations</a>
             <a class="dropdown-item" href="/ownerReservations"><i class="bi bi-ticket-perforated"></i>&nbsp;Manage reservations</a>
             <a class="dropdown-item" href="/myProperties"><i class="bi bi-houses"></i>&nbsp;Manage properties</a>
+            <a class="dropdown-item" href="/password"><i class="bi bi-lock-fill"></i>&nbsp;Change password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"></i>&nbsp;Sign out</a>
           </div>

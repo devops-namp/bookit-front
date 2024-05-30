@@ -32,18 +32,6 @@
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" required placeholder="Choose a username" v-model="user.username">
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Current Password</label>
-                <input type="password" class="form-control" id="password" required placeholder="Enter your password" v-model="currentPassword">
-              </div>
-              <div class="mb-3">
-                <label for="new-password" class="form-label">New Password</label>
-                <input type="password" class="form-control" id="new-password" placeholder="Repeat your password" v-model="newPassword">
-              </div>
-              <div class="mb-3">
-                <label for="confirm-password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm-password" placeholder="Repeat your password" v-model="confirmPassword">
-              </div>
               <div class="d-grid d-flex">
                 <button type="submit" class="btn btn-info btn-lg">Update</button>
                 <button type="button" @click="deleteAccount" class="btn btn-danger btn-lg ml-auto">Delete</button>
@@ -60,6 +48,7 @@
 <script>
 import { toast } from 'vue3-toastify';
 import NavBar from "../util/NavBar.vue";
+import UserService from '@/service/UserService';
 
 export default {
   name: 'ProfilePage',
@@ -69,48 +58,57 @@ export default {
   data() {
     return {
       user:{
-        firstName: 'Aleksa',
-        lastName: 'Simic',
-        email: 'askela007aleksa@gmail.com',
-        placeOfLiving: 'Šabac',
-        username: 'askelaUSer',
-        password: 'userSifra',
-      },
-      confirmPassword: '',
-      currentPassword:'',
-      newPassword:''
+        firstName: '',
+        lastName: '',
+        email: '',
+        placeOfLiving: '',
+        username: ''
+      }
     }
   },
+
+  mounted() {
+    UserService.getUser(localStorage.getItem("username")).then(res => {
+      this.user.firstName = res.data.firstName;
+      this.user.lastName = res.data.lastName;
+      this.user.email = res.data.email;
+      this.user.placeOfLiving = res.data.city;
+      this.user.username = res.data.username;
+    })
+  },
+
   methods: {
-    deleteAccount(){
-      if(this.user.password !== this.currentPassword){
-          toast("Incorect passowrd!", {
-                                  autoClose: 2000,
-                                  type: 'error',
-                                  position: toast.POSITION.BOTTOM_RIGHT
-                              });
-                  return;
-      }
-    },
+    deleteAccount() {},
     checkPasswords() {
-      return this.user.password === this.currentPassword && this.newPassword === this.confirmPassword;
+      return this.newPassword === this.confirmPassword;
     },
     updateAccount() {
-      if (!this.checkPasswords()) {
-        toast("Passwords do not match!", {
-                        autoClose: 2000,
-                        type: 'error',
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-        return;
-      }
-      else{
-        toast("Accont updated!", {
-                        autoClose: 2000,
-                        type: 'success',
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-      }
+      let updateProfilePayload = {
+        "username": this.user.username,
+        "email": this.user.email,
+        "firstName": this.user.firstName,
+        "lastName": this.user.lastName,
+        "city": this.user.placeOfLiving
+      };
+
+      UserService.updateProfile(localStorage.getItem("username"), updateProfilePayload).then(res => {
+        if (res.data.token !== null && res.data.token !== "") {
+          localStorage.setItem("access_token", res.data.token);
+        }
+        localStorage.setItem("username", this.user.username);
+        localStorage.setItem("email", this.user.email);
+        toast("Account updated!", {
+          autoClose: 2000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }).catch(err => {
+        toast(err.response.data, {
+          autoClose: 2000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      });
     }
   }
 }
