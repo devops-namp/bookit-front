@@ -44,6 +44,7 @@
 
 
 <script>
+import AccommodationService from '@/service/AccommodationService';
 import { useRouter } from "vue-router";
 
 export default {
@@ -78,6 +79,7 @@ export default {
       localAdults: this.adults,
       localChildren: this.children,
       allLocations: ["Belgrade", "Novi Sad", "Niš", "Kopaonik", "Zlatibor"],
+      accommodations: []
     };
   },
   setup() {
@@ -102,6 +104,7 @@ export default {
       }
     },
     search_it() {
+      if (this.$route.path.includes('main')){
       const searchUrl = this.generateSearchUrl(
         this.localSelectedLocation,
         this.localStartDate ? this.localStartDate.toISOString().split('T')[0] : '',
@@ -110,6 +113,23 @@ export default {
         this.localChildren
       );
       this.router.push(searchUrl);
+    }
+    else{
+        const filtersArray = Object.keys(this.filters).filter(key => this.filters[key]);
+        const searchParams = {
+          location: this.localSelectedLocation,
+          fromDate: this.localStartDate ? this.localStartDate.toISOString().split('T')[0] : '',
+          toDate: this.localEndDate ? this.localEndDate.toISOString().split('T')[0] : '',
+          numGuests: this.localAdults + this.localChildren,
+          fromPrice: this.minPrice,
+          toPrice: this.maxPrice,
+          filters: filtersArray
+        };
+        AccommodationService.searchAccommodations(searchParams).then(res => {
+          this.accommodations = res.data
+          console.log(res.data);
+      })
+     }
     }
   },
 };
