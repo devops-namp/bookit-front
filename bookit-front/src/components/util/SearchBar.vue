@@ -125,9 +125,10 @@ export default {
           toPrice: this.maxPrice,
           filters: filtersArray
         };
+        console.log(filtersArray, "FILTERRED ATTAY");
         AccommodationService.searchAccommodations(searchParams).then(res => {
           this.accommodations = res.data
-          console.log(res.data);
+          this.$emit('update-search-results', res.data);
       })
      }
     }
