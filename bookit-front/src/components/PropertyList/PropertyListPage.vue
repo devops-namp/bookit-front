@@ -116,6 +116,8 @@
 import NavBar from "../util/NavBar.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import AccommodationService from '@/service/AccommodationService';
+import { toast } from 'vue3-toastify';
 
 export default {
   name: "CreatePropertyListing",
@@ -161,6 +163,16 @@ export default {
     submitForm() {
       console.log(this.form.priceAdjustments);
       console.log("Form submitted:", this.form);
+      AccommodationService.addAccommodation(this.form).then(res => {
+          this.accommodations = res.data
+          this.$emit('update-search-results', res.data);
+      }).catch(err => {
+        toast(err.response.data, {
+          autoClose: 1000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      })
     },
     onFileChange(event) {
       const files = event.target.files;
