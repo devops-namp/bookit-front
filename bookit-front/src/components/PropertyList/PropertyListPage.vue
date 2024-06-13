@@ -137,9 +137,8 @@ export default {
       },
       availableFilters: [
         "WiFi",
-        "Free Parking",
+        "Free_Parking",
         "Kitchen",
-        "Air Condition",
         "Shared Toilet",
       ],
     };
@@ -192,7 +191,7 @@ export default {
           id: 1,
           name: "Central Konaci Apartments on APrtments on Apartments",
           location: "Kopaonik",
-          filters: ["WiFi","Air Condition"],
+          filters: ["WiFi"],
           minGuests: 1,
           maxGuests: 6,
           priceType: "per-unit",
