@@ -4,6 +4,10 @@ const getAllAccommodations = () => {
     return apiAccommodation.get('/accommodation');
 }
 
+const getAccommodation = (accommodationId) => {
+    return apiAccommodation.get(`/accommodation/${accommodationId}`);
+}
+
 const addAccommodation = (payload) => {
     return apiAccommodation.post("/accommodation", payload)
 }
@@ -21,4 +25,4 @@ const adjustPrice = (accommodationId, payload) => {
     return apiAccommodation.put(`/accommodation/price/${accommodationId}`, payload);
 }
 
-export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice };
+export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation };

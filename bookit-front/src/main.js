@@ -8,7 +8,8 @@ import "bootstrap"
 import 'vue3-toastify/dist/index.css'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import moment from 'moment';
+import momentPlugin from './plugins/moment-plugin';
+import store from './store/store.js'
 
 
 import { faSuitcase } from '@fortawesome/free-solid-svg-icons'
@@ -55,7 +56,7 @@ const routes = [
         component: PropertyListPage
     },
     {
-        path: "/propertyDetail",
+        path: "/propertyDetail/:id",
         component: PropertyDetailPage
     },
     {
@@ -99,6 +100,9 @@ const router = createRouter({
 
 const app = createApp(App);
 app.use(router);
+app.use(store);
+app.use(momentPlugin);
+
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('VueDatePicker', VueDatePicker);
 app.mount("#app");
