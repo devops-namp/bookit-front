@@ -14,11 +14,11 @@
             <div class="ratings">
               <div>
                 <h6>Rate the Place</h6>
-                <star-rating v-model="trip.placeRating" />
+                <star-rating v-model="trip.placeRating" @update:modelValue="updateRating($event, trip, 'ACCOMMODATION')" />
               </div>
               <div>
                 <h6>Rate the Host</h6>
-                <star-rating v-model="trip.hostRating" />
+                <star-rating v-model="trip.hostRating" @update:modelValue="updateRating($event, trip, 'HOST')" />
               </div>
             </div>
           </div>
@@ -32,6 +32,8 @@
 import { useRouter } from "vue-router";
 import StarRating from './StarRating.vue';
 import NavBar from "../util/NavBar.vue";
+import ReviewService from '@/service/ReviewService';
+
 
 export default {
   name: "TripHistory",
@@ -50,7 +52,24 @@ export default {
       console.log(trip.accommodation.id);
       console.log(trip);
       // this.$router.push({ path: `/propertyDetail/${trip}`, query: { fromTripHistory: 'true' } });
-    }
+    },
+    updateRating(rating, trip, targetType) {
+      trip.placeRating = rating;
+      let payload = {
+        targetType: targetType,
+        hostUsername: "host1",
+        accommodationId: 1,
+        stars: rating,
+      };
+
+      ReviewService.updateReview(trip.id, payload)
+        .then(() => {
+          console.log("Rating updated successfully");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
   }
   ,
   data() {
