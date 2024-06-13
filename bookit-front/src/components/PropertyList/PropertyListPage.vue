@@ -169,7 +169,8 @@ export default {
             date: adjustment.dates[0].toISOString().split('T')[0],
             price: adjustment.price,
           }
-        }))
+        })),
+        images: this.form.images.map(image => ({ base64Image: image.split(',')[1] }))
       };
 
       console.log("Form submitted:", submissionData);
