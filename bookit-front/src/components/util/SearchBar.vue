@@ -129,6 +129,7 @@ export default {
         AccommodationService.searchAccommodations(searchParams).then(res => {
           this.accommodations = res.data
           this.$emit('update-search-results', res.data);
+          this.$emit('update-search-params', searchParams);
       })
      }
     }

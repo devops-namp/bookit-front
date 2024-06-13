@@ -101,6 +101,8 @@ import NavBar from "../util/NavBar.vue";
 import moment from "moment";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import AccommodationService from "@/service/AccommodationService";
+
 
 export default {
   name: "PropertyDetailPage",
@@ -120,6 +122,28 @@ export default {
       const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
       return (total / this.reviews.length).toFixed(1);
     }
+  },
+  mounted() {
+    console.log("Property id:", this.$route.params.id);
+    // get trip from store
+    let trip = this.$store.state.trip;
+    let fromDate = this.$store.state.searchFromDate;
+    let toDate = this.$store.state.searchToDate;
+    console.log("Trip:", trip);
+    console.log("From date:", fromDate);
+    console.log("To date:", toDate);
+    if (fromDate && toDate) {
+      this.reservationDate = [fromDate, toDate];
+    }
+
+    AccommodationService.getAccommodation(this.$route.params.id)
+      .then(response => {
+        console.log("Property details:", response.data);
+        this.setPropertyData(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching property details:", error);
+    });
   },
   data() {
     return {
@@ -202,6 +226,17 @@ export default {
       console.log("Property reserved:", this.property);
       alert("Reservation successful!");
     },
+    setPropertyData(resp) {
+      this.property.name = resp.name;
+      this.property.location = resp.location;
+      this.property.filters = resp.filters;
+      this.property.minGuests = resp.minGuests;
+      this.property.maxGuests = resp.maxGuests;
+      this.property.priceType = resp.priceType;
+      this.property.price = resp.priceAdjustments[0].price;
+      this.property.pricePer = resp.priceAdjustments[1].price;
+      this.property.images = resp.images.map(image => `data:image/png;base64,${image.base64Image}`);
+    }
   },
 };
 </script>

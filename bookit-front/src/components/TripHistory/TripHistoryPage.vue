@@ -46,8 +46,10 @@ export default {
   },
   methods: {
     openDetailedPropertyCard(trip) {
+      console.log("ovo trazis");
+      console.log(trip.accommodation.id);
       console.log(trip);
-      this.$router.push({ path: "/propertyDetail", query: { fromTripHistory: 'true' } });
+      // this.$router.push({ path: `/propertyDetail/${trip}`, query: { fromTripHistory: 'true' } });
     }
   }
   ,
