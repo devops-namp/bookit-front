@@ -4,6 +4,7 @@
       <nav-bar />
       <search-bar 
           @update-search-results="updateSearchResults"
+          @update-search-params="updateSearchParams"
           :filters="filters"
           :minPrice= "priceRange[0]"
           :maxPrice= "priceRange[1]"
@@ -93,7 +94,7 @@ export default {
   },
   data() {
     return {
-      priceRange: [100, 400],
+      priceRange: [0, 500],
       filters: {
         wifi: false,
         pool: false,
@@ -122,11 +123,23 @@ export default {
     },
     openDetailedPropertyCard(trip) {
       console.log(trip);
-      this.$router.push({ path: "/propertyDetail"});
+      // set trip in store
+      this.$store.commit('SET_TRIP', trip);
+      console.log(this.startDate);
+      console.log(this.endDate);
+      this.$store.commit('SET_SEARCH_FROM_DATE', this.startDate);
+      this.$store.commit('SET_SEARCH_TO_DATE', this.endDate);
+      this.$router.push({ path: `/propertyDetail/${trip.accommodation.id}`});
     },
     updateSearchResults(results) {
       console.log(results);
       this.searchResults = results;
+    },
+    updateSearchParams(params) {
+      this.selectedLocation = params.location;
+      this.startDate = new Date(params.fromDate);
+      this.endDate = new Date(params.toDate);
+      this.numGuests = params.numGuests;
     }
   },
   watch: {
