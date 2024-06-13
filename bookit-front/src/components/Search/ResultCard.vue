@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="image-container">
-      <img :src="image" class="card-img-top" alt="Apartment image">
+      <img :src="'data:image/png;base64,'+image" class="card-img-top" alt="Apartment image">
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ name }}</h5>
