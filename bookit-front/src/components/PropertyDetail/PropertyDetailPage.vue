@@ -78,14 +78,27 @@
           <p class="text-center"><strong>Property:</strong> {{ averagePropertyRating }} / 5</p>
         </div>
 
-        <div class="reviews mt-5">
-          <h3 class="text-center">Reviews</h3>
+        <div class="reviews mt-5" v-if="hostReviews.length > 0">
+          <h3 class="text-center">Host Reviews</h3>
           <div class="row">
-            <div v-for="review in reviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
+            <div v-for="review in hostReviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
               <div class="card-body bg-card-review">
-                <p class="card-text"><strong>Rating:</strong> {{ review.rating }} / 5</p>
-                <p class="card-text"><strong>Date:</strong> {{ formatDate(review.date) }}</p>
-                <p class="card-text"><strong>User:</strong> {{ review.user.firstName }} {{ review.user.lastName }}</p>
+                <p class="card-text"><strong>User:</strong> {{ review.reviewerUsername }}</p>
+                <p class="card-text"><strong>Rating:</strong> {{ review.stars }} / 5</p>
+                <p class="card-text"><strong>Date:</strong> {{ formatDate(review.reviewDate) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reviews mt-5" v-if="accommodationReviews.length > 0">
+          <h3 class="text-center">Accommodation Reviews</h3>
+          <div class="row">
+            <div v-for="review in accommodationReviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
+              <div class="card-body bg-card-review">
+                <p class="card-text"><strong>User:</strong> {{ review.reviewerUsername }}</p>
+                <p class="card-text"><strong>Rating:</strong> {{ review.stars }} / 5</p>
+                <p class="card-text"><strong>Date:</strong> {{ formatDate(review.reviewDate) }}</p>
               </div>
             </div>
           </div>
@@ -102,6 +115,7 @@ import moment from "moment";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import AccommodationService from "@/service/AccommodationService";
+import ReviewService from "@/service/ReviewService";
 
 
 export default {
@@ -115,17 +129,16 @@ export default {
       return this.$route.query.fromTripHistory === 'true';
     },
     averageHostRating() {
-      const total = this.reviews.reduce((sum, review) => sum + review.hostRating, 0);
-      return (total / this.reviews.length).toFixed(1);
+      const total = this.hostReviews.reduce((sum, review) => sum + review.stars, 0);
+      return (total / this.hostReviews.length).toFixed(1);
     },
     averagePropertyRating() {
-      const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
-      return (total / this.reviews.length).toFixed(1);
+      const total = this.accommodationReviews.reduce((sum, review) => sum + review.stars, 0);
+      return (total / this.accommodationReviews.length).toFixed(1);
     }
   },
   mounted() {
     console.log("Property id:", this.$route.params.id);
-    // get trip from store
     let trip = this.$store.state.trip;
     let fromDate = this.$store.state.searchFromDate;
     let toDate = this.$store.state.searchToDate;
@@ -140,6 +153,24 @@ export default {
       .then(response => {
         console.log("Property details:", response.data);
         this.setPropertyData(response.data);
+        ReviewService.getAccommodationReviews(this.$route.params.id)
+          .then(response => {
+            console.log("Reviews:", response.data);
+            this.setAccommodationReviewData(response.data);
+          })
+          .catch(error => {
+            console.error("Error fetching reviews:", error);
+          });
+
+        ReviewService.getHostReviews(this.property.hostUsername)
+          .then(response => {
+            console.log("Host reviews:", response.data);
+            this.setHostReviewData(response.data);
+          })
+          .catch(error => {
+            console.error("Error fetching host reviews:", error);
+          });
+
       })
       .catch(error => {
         console.error("Error fetching property details:", error);
@@ -169,50 +200,11 @@ export default {
           "https://cf.bstatic.com/xdata/images/hotel/max1024x768/554520909.jpg?k=f061149dd59c7a7a4fe9c51440f24eff26d009668f0704d9b7348482f3aef981&o=&hp=1",
         ]
       },
-      reviews: [
-        {
-          id: 1,
-          rating: 5,
-          hostRating: 5,
-          date: "2023-05-21",
-          user: { firstName: "Branko", lastName: "Brankic" }
-        },
-        {
-          id: 2,
-          rating: 4,
-          hostRating: 4,
-          date: "2023-06-10",
-          user: { firstName: "Janko", lastName: "Jankic" }
-        },
-        {
-          id: 3,
-          rating: 5,
-          hostRating: 5,
-          date: "2023-05-21",
-          user: { firstName: "Branko", lastName: "Brankic" }
-        },
-        {
-          id: 4,
-          rating: 4,
-          hostRating: 4,
-          date: "2023-06-10",
-          user: { firstName: "Janko", lastName: "Jankic" }
-        },
-        {
-          id: 5,
-          rating: 5,
-          hostRating: 5,
-          date: "2023-05-21",
-          user: { firstName: "Branko", lastName: "Brankic" }
-        },
-        {
-          id: 6,
-          rating: 4,
-          hostRating: 4,
-          date: "2023-06-10",
-          user: { firstName: "Janko", lastName: "Jankic" }
-        },
+      hostReviews: [
+
       ],
+      accommodationReviews: [
+      ]
     };
   },
   methods: {
@@ -228,6 +220,7 @@ export default {
     },
     setPropertyData(resp) {
       this.property.name = resp.name;
+      this.property.hostUsername = resp.hostUsername;
       this.property.location = resp.location;
       this.property.filters = resp.filters;
       this.property.minGuests = resp.minGuests;
@@ -236,6 +229,17 @@ export default {
       this.property.price = resp.priceAdjustments[0].price;
       this.property.pricePer = resp.priceAdjustments[1].price;
       this.property.images = resp.images.map(image => `data:image/png;base64,${image.base64Image}`);
+    },
+    setAccommodationReviewData(resp) {
+        console.log("Setting reviews:", resp);
+        // add all reviews to the array
+        this.accommodationReviews = resp;
+        this.averagePropertyRating = this.accommodationReviews.reduce((sum, review) => sum + review.stars, 0) / this.accommodationReviews.length;
+    },
+    setHostReviewData(resp) {
+        console.log("Setting host reviews:", resp);
+        this.hostReviews = resp;
+        this.averageHostRating = this.hostReviews.reduce((sum, review) => sum + review.stars, 0) / this.hostReviews.length;
     }
   },
 };
