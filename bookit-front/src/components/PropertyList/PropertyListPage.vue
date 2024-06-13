@@ -161,13 +161,26 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log(this.form.priceAdjustments);
-      console.log("Form submitted:", this.form);
-      AccommodationService.addAccommodation(this.form).then(res => {
-          this.accommodations = res.data
-          this.$emit('update-search-results', res.data);
+      const submissionData = {
+        ...this.form,
+        filters: this.form.filters.join(', ').toLocaleLowerCase(),
+        priceAdjustments: this.form.priceAdjustments.map(adjustment => ({
+          priceAdjustmentDate: {
+            date: adjustment.dates[0].toISOString().split('T')[0],
+            price: adjustment.price,
+          }
+        }))
+      };
+
+      console.log("Form submitted:", submissionData);
+      AccommodationService.addAccommodation(submissionData).then(res => {
+           toast('New accommodation added', {
+          autoClose: 1000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
       }).catch(err => {
-        toast(err.response.data, {
+        toast('You did something wrong!!!', {
           autoClose: 1000,
           type: 'error',
           position: toast.POSITION.BOTTOM_RIGHT
