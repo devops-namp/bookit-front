@@ -9,14 +9,16 @@
           <div class="form-group">
             <h5 for="property-name">Property Name</h5>
             <div class="pl-5 pr-5">
-              <input type="text" class="form-control" id="property-name" v-model="form.name" required placeholder="Enter property name" />
+              <input type="text" class="form-control" id="property-name" v-model="form.name" required
+                placeholder="Enter property name" />
             </div>
           </div>
 
           <div class="form-group">
             <h5 for="property-location">Location</h5>
             <div class="pl-5 pr-5">
-              <input type="text" class="form-control" id="property-location" v-model="form.location" required placeholder="Enter property location...  e.g. Novi Sad"/>
+              <input type="text" class="form-control" id="property-location" v-model="form.location" required
+                placeholder="Enter property location...  e.g. Novi Sad" />
             </div>
           </div>
 
@@ -26,7 +28,7 @@
               <div class="d-flex flex-wrap">
                 <div class="form-check mr-3" v-for="filter in availableFilters" :key="filter">
                   <input class="form-check-input" type="checkbox" :id="filter" :value="filter" v-model="form.filters" />
-                  <label class="form-check-label" :for="filter">{{filter}}</label>
+                  <label class="form-check-label" :for="filter">{{ filter }}</label>
                 </div>
               </div>
             </div>
@@ -36,9 +38,11 @@
             <h5>Guests</h5>
             <div class="pl-5 pr-5 d-flex align-content-center">
               <label class="ml-5 pr-2">from:</label>
-              <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required placeholder="Min Guests"/>
+              <input type="number" class="form-control mr-5" v-model="form.minGuests" min="1" required
+                placeholder="Min Guests" />
               <label class="pr-2 pl-2">to:</label>
-              <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required placeholder="Max Guests"/>
+              <input type="number" class="form-control mr-5" v-model="form.maxGuests" min="1" required
+                placeholder="Max Guests" />
             </div>
           </div>
 
@@ -46,11 +50,13 @@
             <h5>Price Type</h5>
             <div class="d-flex justify-content-center">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="price-per-unit" value="per-unit" v-model="form.priceType" required />
+                <input class="form-check-input" type="radio" id="price-per-unit" value="per-unit"
+                  v-model="form.priceType" required />
                 <label class="form-check-label" for="price-per-unit">Price per Unit</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="price-per-person" value="per-person" v-model="form.priceType" required />
+                <input class="form-check-input" type="radio" id="price-per-person" value="per-person"
+                  v-model="form.priceType" required />
                 <label class="form-check-label" for="price-per-person">Price per Person</label>
               </div>
             </div>
@@ -59,21 +65,14 @@
             <h5>Price Adjustments</h5>
             <div class="pl-4 pr-4">
               <div v-for="(priceAdjustment, index) in form.priceAdjustments" :key="index" class="d-flex mb-2">
-                <VueDatePicker
-                  v-model="priceAdjustment.dates"
-                  range
-                  range-separator="to"
-                  start-placeholder="Start date"
-                  end-placeholder="End date"
-                  class="mr-2"
-                  :enable-time-picker="false"
-                  format="dd-MM-yyyy"
-                  :min-date="new Date()"
-                ></VueDatePicker>
-                <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0" placeholder="Price (€)"/>
+                <VueDatePicker v-model="priceAdjustment.dates" range range-separator="to" start-placeholder="Start date"
+                  end-placeholder="End date" class="mr-2" :enable-time-picker="false" format="dd-MM-yyyy"
+                  :min-date="new Date()"></VueDatePicker>
+                <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0"
+                  placeholder="Price (€)" />
                 <button type="button" class="btn btn-danger" @click="removePriceAdjustment(index)">Remove</button>
               </div>
-              <button type="button" class="btn btn-success" @click="addPriceAdjustment" > Add Price Adjustment </button>
+              <button type="button" class="btn btn-success" @click="addPriceAdjustment"> Add Price Adjustment </button>
             </div>
           </div>
 
@@ -86,15 +85,17 @@
               <div v-if="form.images.length > 0">
                 <div class="carousel" id="carouselExample" data-ride="carousel">
                   <div class="carousel-inner">
-                    <div class="carousel-item" v-for="(image, index) in form.images" :key="index" :class="{ active: index === 0 }">
+                    <div class="carousel-item" v-for="(image, index) in form.images" :key="index"
+                      :class="{ active: index === 0 }">
                       <img :src="image" class="d-block carousel-image" />
                     </div>
                   </div>
                 </div>
                 <div class="mt-2 d-flex flex-wrap justify-content-center">
                   <div class="image-container pr-2 pb-2" v-for="(image, index) in form.images" :key="index">
-                    <img :src="image" class="img-thumbnail thumbnail-image" @click="setMainImage(index)"/>
-                    <button type="button" class="btn btn-danger btn-sm btn-delete-img btn-block mt-1" @click="removeImage(index)">
+                    <img :src="image" class="img-thumbnail thumbnail-image" @click="setMainImage(index)" />
+                    <button type="button" class="btn btn-danger btn-sm btn-delete-img btn-block mt-1"
+                      @click="removeImage(index)">
                       Delete
                     </button>
                   </div>
@@ -161,6 +162,35 @@ export default {
   },
   methods: {
     submitForm() {
+
+//       // this is the request the backend expects
+//       public class AdjustPriceRequest {
+//     List<IntervalPrice> pricesPerInterval;
+
+//     @Getter
+//     @Setter
+//     @NoArgsConstructor
+//     @AllArgsConstructor
+//     public static class IntervalPrice {
+//         @JsonFormat(pattern = "yyyy-MM-dd")
+//         LocalDate startDate;
+//         @JsonFormat(pattern = "yyyy-MM-dd")
+//         LocalDate endDate;
+//         double price;
+//     }
+// }
+
+      let priceAdjustmentList = [];
+      this.form.priceAdjustments.forEach(priceAdjustment => {
+        priceAdjustmentList.push({
+          startDate: priceAdjustment.dates[0].toISOString().split('T')[0],
+          endDate: priceAdjustment.dates[1].toISOString().split('T')[0],
+          price: priceAdjustment.price
+        });
+      });
+      priceAdjustmentList = {
+        pricesPerInterval: priceAdjustmentList
+      };
       const submissionData = {
         ...this.form,
         filters: this.form.filters.join(', ').toLocaleLowerCase(),
@@ -175,11 +205,23 @@ export default {
 
       console.log("Form submitted:", submissionData);
       AccommodationService.addAccommodation(submissionData).then(res => {
-           toast('New accommodation added', {
-          autoClose: 1000,
-          type: 'success',
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+
+        console.log(res.data);
+        let accommodationId = res.data.id;
+        AccommodationService.adjustPrice(accommodationId, priceAdjustmentList).then(res => {
+          toast('New accommodation added', {
+            autoClose: 1000,
+            type: 'success',
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+          console.log(res.data);
+        }).catch(err => {
+          toast('You did something wrong!!!', {
+            autoClose: 1000,
+            type: 'error',
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
+        })
       }).catch(err => {
         toast('You did something wrong!!!', {
           autoClose: 1000,
@@ -213,37 +255,37 @@ export default {
       this.form.images.splice(index, 1);
     },
     getPropertyById() {
-      const propertySent = 
-        {
-          id: 1,
-          name: "Central Konaci Apartments on APrtments on Apartments",
-          location: "Kopaonik",
-          filters: ["WiFi"],
-          minGuests: 1,
-          maxGuests: 6,
-          priceType: "per-unit",
-          images: [
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1"
-          ],
-          priceAdjustments: [
-            {
-              dates: [
-                new Date("2024-05-21T09:20:00"),
-                new Date("2024-05-31T09:20:00")
-              ],
-              price: 1555
-            },
-            {
-              dates: [
-                new Date("2024-05-21T09:20:00"),
-                new Date("2024-05-31T09:20:00")
-              ],
-              price: 1600
-            }
-          ]
-        }
-        return propertySent
-  },
+      const propertySent =
+      {
+        id: 1,
+        name: "Central Konaci Apartments on APrtments on Apartments",
+        location: "Kopaonik",
+        filters: ["WiFi"],
+        minGuests: 1,
+        maxGuests: 6,
+        priceType: "per-unit",
+        images: [
+          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1"
+        ],
+        priceAdjustments: [
+          {
+            dates: [
+              new Date("2024-05-21T09:20:00"),
+              new Date("2024-05-31T09:20:00")
+            ],
+            price: 1555
+          },
+          {
+            dates: [
+              new Date("2024-05-21T09:20:00"),
+              new Date("2024-05-31T09:20:00")
+            ],
+            price: 1600
+          }
+        ]
+      }
+      return propertySent
+    },
   }
 };
 </script>

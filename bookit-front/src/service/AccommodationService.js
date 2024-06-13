@@ -17,4 +17,8 @@ const searchAccommodations = (params) => {
     return apiAccommodation.get(`/accommodation/search?${queryParams}`);
 }
 
-export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations };
+const adjustPrice = (accommodationId, payload) => {
+    return apiAccommodation.put(`/accommodation/price/${accommodationId}`, payload);
+}
+
+export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice };
