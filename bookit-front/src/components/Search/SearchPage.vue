@@ -97,7 +97,6 @@ export default {
       filters: {
         wifi: false,
         kitchen: false,
-        air_conditioning: false,
         free_parking: false,
         shared_toilet: false,
       },
