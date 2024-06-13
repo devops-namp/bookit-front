@@ -45,7 +45,7 @@
                 :filters="result.accommodation.filters"
                 :minGuests="result.accommodation.minGuests"
                 :maxGuests="result.accommodation.maxGuests"
-                :price="result.totalPrice.price"
+                :price="result.totalPrice"
                 :pricePer="result.accommodation.pricePer"
                 :priceType="result.accommodation.priceType"
               />
@@ -96,7 +96,8 @@ export default {
       priceRange: [100, 400],
       filters: {
         wifi: false,
-        kitchen: false,
+        pool: false,
+        fireplace: false,
         free_parking: false,
         shared_toilet: false,
       },

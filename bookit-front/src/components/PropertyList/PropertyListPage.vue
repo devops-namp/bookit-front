@@ -137,8 +137,9 @@ export default {
       },
       availableFilters: [
         "WiFi",
+        "Pool",
         "Free_Parking",
-        "Kitchen",
+        "Fireplace",
         "Shared Toilet",
       ],
     };

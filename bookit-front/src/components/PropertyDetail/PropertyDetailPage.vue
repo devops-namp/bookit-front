@@ -129,7 +129,7 @@ export default {
       property: {
         name: "Central Konaci Apartments",
         location: "Kopaonik",
-        filters: ["WiFi", "Free Parking", "Kitchen"],
+        filters: ["WiFi", "Free Parking", "Fireplace"],
         price: 300,
         priceType: "price-per-person",
         pricePer: 150,

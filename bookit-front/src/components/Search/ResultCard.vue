@@ -16,7 +16,8 @@
       </ul>
       <p class="card-text mb-0"><strong>Guests:</strong> {{ minGuests }} - {{ maxGuests }}</p>
       <label class="card-text mb-0"><strong>Price:</strong> {{ price }}€ (in full)</label>
-      <label class="card-text"><strong>Price:</strong> {{ pricePer }}€ ({{formatPriceType(priceType)}})</label>
+      <!-- Ako bude trebao price type uzeti liniju ispod -->
+      <!-- <label class="card-text"><strong>Price:</strong> {{ pricePer }}€ ({{formatPriceType(priceType)}})</label> -->
     </div>
   </div>
 </template>
@@ -40,7 +41,8 @@ export default {
       const availableFilters = this.filters.split(',');
       const allFilters = {
         wifi: false,
-        kitchen: false,
+        pool: false,
+        fireplace: false,
         free_parking: false,
         shared_toilet: false,
       };
