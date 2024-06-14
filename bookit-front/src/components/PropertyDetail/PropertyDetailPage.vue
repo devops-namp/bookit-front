@@ -24,7 +24,7 @@
         <div class="property-info mt-4">
           <div class="d-flex justify-content-center">
               <h3 class="price-h3">{{property.price}}€</h3> *in full
-              <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}}
+              <!-- <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}} -->
           </div>
           <h3>Details</h3>
           <p><strong>Location:</strong> {{ property.location }}</p>
@@ -222,12 +222,12 @@ export default {
       this.property.name = resp.name;
       this.property.hostUsername = resp.hostUsername;
       this.property.location = resp.location;
-      this.property.filters = resp.filters;
+      this.property.filters = resp.filters.split(',');
       this.property.minGuests = resp.minGuests;
       this.property.maxGuests = resp.maxGuests;
       this.property.priceType = resp.priceType;
-      this.property.price = resp.priceAdjustments[0].price;
-      this.property.pricePer = resp.priceAdjustments[1].price;
+      this.property.price = this.$store.state.trip.totalPrice;
+      // this.property.pricePer = resp.priceAdjustments[1].price;
       this.property.images = resp.images.map(image => `data:image/png;base64,${image.base64Image}`);
     },
     setAccommodationReviewData(resp) {
