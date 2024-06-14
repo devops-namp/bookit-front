@@ -23,7 +23,7 @@
         </li>
       </ul>
       <a class="text-light text-decoration-none p-2" href="/propertyListing">List your property</a>
-      <div v-if="user" class="nav-item dropdown position-relative">
+      <!-- <div v-if="user" class="nav-item dropdown position-relative">
         <a class="text-light text-decoration-none p-2 pl-3 position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="bi bi-bell-fill"></i>
           <span v-if="notificationsCount > 0" class="badge badge-danger position-absolute top-0 start-100 translate-middle">{{ notificationsCount }}</span>
@@ -45,7 +45,11 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item text-center" href="/notificationSettings">Notification Settings</a>
         </div>
-      </div>
+      </div> -->
+      <notifications
+        v-if="user"
+        :user-id="1"
+      ></notifications>
       <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/">Login</a>
       <a v-if="!user" class="text-light text-decoration-none bg-info p-2" href="/signup">Sign up</a>
     </div>
@@ -54,50 +58,21 @@
 
 
 <script>
+import Notifications from './Notifications.vue';
+
 export default {
   name: 'NavBar',
+  components: {
+    Notifications,
+  },
   data() {
     return {
       user: 'Aleksa Simic',
-      notificationsCount: 6,
-      notifications: [
-        { id: 1, message: 'New booking request' },
-        { id: 2, message: 'Your reservation is confirmed' },
-        { id: 3, message: 'Your reservation is declined' },
-        { id: 4, message: 'Reservation is canceled' },
-        { id: 5, message: 'You have been rated' },
-        { id: 6, message: 'Your property has been rated' },
-      ],
     };
-  },
-  methods: {
-    handleNotificationClick(notificationId) {
-      this.notifications = this.notifications.filter(notification => notification.id !== notificationId);
-      this.notificationsCount--;
-    },
   },
 };
 </script>
 
-
 <style scoped>
-.badge {
-  top: 0.3rem;
-  right: 0.5rem;
-}
-.notification-item {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
-  padding: 10px;
-}
-.notification-item:hover {
-  background-color: #e9ecef;
-}
-.green-circle {
-  width: 10px;
-  height: 10px;
-  background-color: green;
-  border-radius: 50%;
-}
+/* Ovdje možete dodati stilove specifične za NavBar komponentu */
 </style>
-
