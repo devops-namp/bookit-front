@@ -226,7 +226,7 @@ export default {
       this.property.minGuests = resp.minGuests;
       this.property.maxGuests = resp.maxGuests;
       this.property.priceType = resp.priceType;
-      this.property.price = this.$store.state.trip.totalPrice;
+      this.property.price = this.$store.state.totalPrice;
       // this.property.pricePer = resp.priceAdjustments[1].price;
       this.property.images = resp.images.map(image => `data:image/png;base64,${image.base64Image}`);
     },
