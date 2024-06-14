@@ -128,6 +128,7 @@ export default {
       console.log(trip);
       // set trip in store
       this.$store.commit('SET_TRIP', trip);
+      this.$store.commit('SET_TOTALPRICE', trip.totalPrice);
       console.log(this.startDate);
       console.log(this.endDate);
       this.$store.commit('SET_SEARCH_FROM_DATE', this.startDate);
