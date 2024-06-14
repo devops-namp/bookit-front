@@ -19,7 +19,7 @@
             <h5>Filters</h5>
             <div class="form-group">
               <label for="priceRange">Price Range</label>
-              <slider v-model="priceRange" :format="format" :min="0" :max="500" :tooltips="false" />
+              <slider v-model="priceRange" :format="format" :min="0" :max="9999" :tooltips="false" />
               <div class="d-flex justify-content-between mt-2">
                 <span>{{ priceRange[0] }}€</span>
                 <span>{{ priceRange[1] }}€</span>
@@ -94,7 +94,7 @@ export default {
   },
   data() {
     return {
-      priceRange: [0, 500],
+      priceRange: [0, 9999],
       filters: {
         wifi: false,
         pool: false,
