@@ -42,9 +42,12 @@ export default {
       const allFilters = {
         wifi: false,
         pool: false,
+        parking: false,
         fireplace: false,
-        free_parking: false,
-        shared_toilet: false,
+        spa: false,
+        bath: false,
+        balcony: false,
+        kitchen: false,
       };
       availableFilters.forEach(filter => {
         console.log(filter,"FILTERR");

@@ -141,9 +141,12 @@ export default {
       availableFilters: [
         "WiFi",
         "Pool",
-        "Free_Parking",
+        "Parking",
         "Fireplace",
-        "Shared Toilet",
+        "Spa",
+        "Bath",
+        "Balcony",
+        "Kitchen",
       ],
     };
   },
