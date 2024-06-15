@@ -251,8 +251,23 @@ export default {
       return moment(date).format("DD-MM-YYYY");
     },
     reserveProperty() {
-      console.log("Property reserved:", this.property);
-      alert("Reservation successful!");
+      const obj = {
+        accommodationId : this.$route.params.id,
+        guestUsername : localStorage.getItem("username"),
+        hostUsername : this.property.hostUsername,
+        fromDate: this.formatDate(this.$store.state.searchFromDate),
+        toDate: this.formatDate(this.$store.state.searchToDate),
+        numOfGusts: this.$store.state.adults + this.$store.state.children,
+        totalPrice:  this.$store.state.totalPrice
+      }
+      AccommodationService.createReservation(obj)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching property details:", error);
+    });
+      
     },
     setPropertyData(resp) {
       this.property.name = resp.name;
