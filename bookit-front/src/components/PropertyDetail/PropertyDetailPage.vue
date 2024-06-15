@@ -164,6 +164,8 @@ export default {
     let trip = this.$store.state.trip;
     let fromDate = this.$store.state.searchFromDate;
     let toDate = this.$store.state.searchToDate;
+    this.adults = this.$store.state.adults;
+    this.children = this.$store.state.children;
     console.log("Trip:", trip);
     console.log("From date:", fromDate);
     console.log("To date:", toDate);

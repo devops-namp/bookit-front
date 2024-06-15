@@ -133,6 +133,9 @@ export default {
       console.log(this.endDate);
       this.$store.commit('SET_SEARCH_FROM_DATE', this.startDate);
       this.$store.commit('SET_SEARCH_TO_DATE', this.endDate);
+      this.$store.commit('SET_ADULTS', this.adults);
+      this.$store.commit('SET_CHILDREN', this.children);
+
       this.$router.push({ path: `/propertyDetail/${trip.accommodation.id}`});
     },
     updateSearchResults(results) {
