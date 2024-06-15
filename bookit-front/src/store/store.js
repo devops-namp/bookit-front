@@ -7,10 +7,18 @@ export default createStore({
     totalPrice: null,
     searchFromDate: null,
     searchToDate: null,
+    children: null,
+    adults:null
   },
   mutations: {
     SET_TRIP(state, trip) {
       state.trip = trip;
+    },
+    SET_CHILDREN(state, children) {
+      state.children = children;
+    },
+    SET_ADULTS(state, adults) {
+      state.adults = adults;
     },
     SET_TOTALPRICE(state, totalPrice) {
       state.totalPrice = totalPrice;
@@ -33,6 +41,12 @@ export default createStore({
     setTrip({ commit }, trip) {
       commit('SET_TRIP', trip);
     },
+    setTrip({ commit }, children) {
+      commit('SET_CHILDREN', children);
+    },
+    setTrip({ commit }, adults) {
+      commit('SET_ADULTS', adults);
+    },
     setTotalPrice({ commit }, totalPrice) {
       commit('SET_TOTALPRICE', totalPrice);
     },
@@ -44,6 +58,12 @@ export default createStore({
     getTrip(state) {
       return state.trip;
     },
+    getChildren(state) {
+      return state.children;
+    },
+    getAdults(state) {
+      return state.adults;
+    },
     getTotalPrice(state) {
       return state.totalPrice;
     }
@@ -51,7 +71,11 @@ export default createStore({
   plugins: [createPersistedState({
     storage: window.sessionStorage,
     reducer: (state) => ({
-      totalPrice:state.totalPrice
+      totalPrice:state.totalPrice,
+      searchFromDate:state.searchFromDate,
+      searchToDate:state.searchToDate,
+      children:state.children,
+      adults:state.adults
     })
   })]
 });
