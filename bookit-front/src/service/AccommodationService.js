@@ -29,6 +29,11 @@ const createReservation = (payload) => {
     return apiAccommodation.post("/reservations", payload)
 }
 
+const getReservations = (username) => {
+    return apiAccommodation.get(`/reservations/getByUser/${username}`)
+    
+};
+
 const removePrice = (accommodationId, payload) => {
     return apiAccommodation.delete(`/accommodation/price/${accommodationId}`, payload);
 }
@@ -37,4 +42,4 @@ const getDatesInfo = (accommodationId, month, year) => {
     return apiAccommodation.get(`/accommodation/dates/${accommodationId}?month=${month}&year=${year}`);
 }
 
-export default { createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };
+export default { getReservations, createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };

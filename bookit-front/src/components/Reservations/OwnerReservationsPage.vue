@@ -4,7 +4,7 @@
       <nav-bar />
       <div class="owner-reservations-list pt-5 d-flex flex-column align-items-center">
         <div class="d-flex justify-content-between align-items-center w-100">
-          <h2 class="text-white mb23 ml-auto mr-auto">Manage Reservations</h2>
+          <h2 class="text-white mb-3 ml-auto mr-auto">Manage Reservations</h2>
         </div>
         <div class="d-flex ml-auto pb-3">
           <div class="custom-control custom-switch">
@@ -14,23 +14,26 @@
         </div>
         <div class="reservation-card" v-for="reservation in reservations" :key="reservation.id">
           <div class="d-flex justify-content-center p-5 col-4">
-            <img :src="reservation.image" alt="Reservation Image" class="reservation-image">
-          </div>
+          <img 
+            v-if="reservation.accommodationDto.images[0] && reservation.accommodationDto.images[0].base64Image" 
+            :src="'data:image/jpeg;base64,' + reservation.accommodationDto.images[0].base64Image" alt="Reservation Image" class="reservation-image">
+          <img v-else src="@/assets/No-Image.png" alt="Reservation Image" class="reservation-image">
+        </div>
           <div class="reservation-details col">
-            <h5>{{ reservation.name }}</h5>
-            <label>{{ reservation.location }}</label>
-            <label>{{ formatDate(reservation.startDate) }} to {{ formatDate(reservation.endDate) }}</label>
-            <label>Status: <span :class="statusClass(reservation.status)">{{ reservation.status }}</span></label>
-            <label>Adults: {{ reservation.adults }}&nbsp;&nbsp; Children: {{ reservation.children }}</label>
-            <div v-if="reservation.status === 'Pending'">
+            <h5>{{ reservation.accommodationDto.name }}</h5>
+            <label>{{ reservation.accommodationDto.location }}</label>
+            <label>{{ formatDate(reservation.fromDate) }} to {{ formatDate(reservation.toDate) }}</label>
+            <label>Status: <span :class="statusClass(reservation.state)">{{ reservation.state }}</span></label>
+            <label>Number of guests: {{ reservation.numOfGusts}}&nbsp;&nbsp;</label>
+            <div v-if="reservation.state === 'PENDING'">
               <button class="btn btn-success mr-2" @click="confirmReservation(reservation.id)" v-if="!autoAccept">Confirm</button>
               <button class="btn btn-danger" @click="declineReservation(reservation.id)" v-if="!autoAccept">Decline</button>
             </div>
           </div>
           <div class="col align-content-center text-center p-3">
-            <h3 class="price-h3">{{ reservation.price }}€</h3> *in full <hr class="m-0">
-            <h3 class="pricePer-h3 pt-4">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}<hr class="m-0">
-            <h3 class="cancelations-h3 pt-4">{{reservation.numberOfCancelations}}</h3> *users previos cancelations
+            <h3 class="price-h3">{{ reservation.totalPrice }}€</h3> *in full <hr class="m-0">
+            <!-- <h3 class="pricePer-h3 pt-4">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}<hr class="m-0"> -->
+            <h3 class="cancelations-h3 pt-4">{{reservation.numberOfCancelations}}</h3> *users previous cancelations
           </div>
         </div>
       </div>
@@ -38,11 +41,11 @@
   </div>
 </template>
 
-
 <script>
+import AccommodationService from "@/service/AccommodationService";
 import NavBar from "../util/NavBar.vue";
 import moment from "moment";
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 export default {
   name: "OwnerReservationsPage",
@@ -50,46 +53,31 @@ export default {
     NavBar,
   },
   setup() {
+    const reservations = ref([]);
     const autoAccept = ref(false);
-    const reservations = ref([
-      {
-        id: 1,
-        name: "Central Konaci Apartments",
-        location: "Kopaonik",
-        startDate: "2024-06-01",
-        endDate: "2024-06-10",
-        status: "Pending",
-        adults: 2,
-        children: 6,
-        price: 300,
-        pricePer: 10,
-        priceType: "price-per-person",
-        numberOfCancelations: 0,
-        image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-      },
-      {
-        id: 2,
-        name: "Central Zlatibor",
-        location: "Zlatibor",
-        startDate: "2024-07-15",
-        endDate: "2024-07-25",
-        status: "Pending",
-        adults: 1,
-        children: 2,
-        price: 250,
-        pricePer: 30,
-        priceType: "price-per-unit",
-        numberOfCancelations: 10,
-        image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-      },
-    ]);
 
+    const fetchReservations = async () => {
+      try {
+        const response = await AccommodationService.getReservations(localStorage.getItem("username"));
+        console.log(response.data);
+        reservations.value = response.data;
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
+    };
+
+    // const formatPriceType = (priceType) => {
+    //   return priceType.replace('price-', '').replace('-', ' ')
+    // };
     const formatPriceType = (priceType) => {
+      if (!priceType) return '';
       return priceType.replace('price-', '').replace('-', ' ')
     };
+
     const formatDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
     };
+
     const statusClass = (status) => {
       return {
         'text-success font-weight-bold': status === 'Accepted',
@@ -97,6 +85,7 @@ export default {
         'text-danger font-weight-bold': status === 'Declined'
       };
     };
+
     const confirmReservation = (id) => {
       reservations.value = reservations.value.map(reservation => {
         if (reservation.id === id) {
@@ -106,6 +95,7 @@ export default {
       });
       alert('Reservation confirmed.');
     };
+
     const declineReservation = (id) => {
       reservations.value = reservations.value.map(reservation => {
         if (reservation.id === id) {
@@ -127,6 +117,8 @@ export default {
         alert('All pending reservations have been automatically accepted.');
       }
     });
+
+    onMounted(fetchReservations);
 
     return {
       autoAccept,
