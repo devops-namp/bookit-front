@@ -229,20 +229,22 @@ export default {
       const submissionData = {
         ...this.form,
         filters: this.form.filters.join(', ').toLocaleLowerCase(),
-        images: this.form.images.map(image => {return {'imageData': image.split(',')[1]}})
+        images: this.form.images.map(image => {return {'base64Image': image.split(',')[1]}})
       };
 
       console.log("Form submitted:", submissionData);
-      let method, params;
+      let method, params, msg;
       if (this.accommodationId) {
         method = AccommodationService.updateAccommodation
         params = [this.accommodationId, submissionData];
+        msg = 'Accommodation updated successfully!';
       } else {
         method = AccommodationService.addAccommodation
         params = [submissionData];
+        msg = 'New accommodation added';
       }
       method(...params).then(res => {
-        toast('New accommodation added', {
+        toast(msg, {
           autoClose: 1000,
           type: 'success',
           position: toast.POSITION.BOTTOM_RIGHT
