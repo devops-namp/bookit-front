@@ -61,20 +61,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <h5>Price Adjustments</h5>
-            <div class="pl-4 pr-4">
-              <div v-for="(priceAdjustment, index) in form.priceAdjustments" :key="index" class="d-flex mb-2">
-                <VueDatePicker v-model="priceAdjustment.dates" range range-separator="to" start-placeholder="Start date"
-                  end-placeholder="End date" class="mr-2" :enable-time-picker="false" format="dd-MM-yyyy"
-                  :min-date="new Date()"></VueDatePicker>
-                <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0"
-                  placeholder="Price (€)" />
-                <button type="button" class="btn btn-danger" @click="removePriceAdjustment(index)">Remove</button>
-              </div>
-              <button type="button" class="btn btn-success" @click="addPriceAdjustment"> Add Price Adjustment </button>
-            </div>
-          </div>
+
 
           <div class="form-group">
             <h5 for="property-images">Images</h5>
@@ -104,11 +91,49 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-info btn-lg btn-block">
+          <button type="submit" class="btn btn-info btn-lg btn-block mb-3">
             Submit
           </button>
         </div>
       </form>
+      <div class="small-container bg-secondary p-3 mx-auto">
+        <h4>Availability</h4>
+        <div class="form-group">
+          <h5>Add price availability</h5>
+          <div class="pl-4 pr-4">
+            <div v-for="(priceAdjustment, index) in pricePlusAdjustments" :key="index" class="d-flex mb-2">
+              <VueDatePicker v-model="priceAdjustment.dates" range range-separator="to" start-placeholder="Start date"
+                end-placeholder="End date" class="mr-2" :enable-time-picker="false" format="dd-MM-yyyy"
+                :min-date="new Date()"></VueDatePicker>
+              <input type="number" class="form-control col-3 mr-2" v-model="priceAdjustment.price" min="0"
+                placeholder="Price (€)" />
+              <button type="button" class="btn btn-danger" @click="removePlusPriceAdjustment(index)">Remove</button>
+            </div>
+            <button type="button" class="btn btn-success" @click="addPlusPriceAdjustment">Add New Interval</button>
+          </div>
+        </div>
+        <button class="btn btn-info btn-lg btn-block mb-5" @click="updatePlusPriceAdjustments">
+          Add availabilites
+        </button>
+
+        <div class="form-group">
+          <h5>Remove availability</h5>
+          <div class="pl-4 pr-4">
+            <div v-for="(priceAdjustment, index) in priceMinusAdjustments" :key="index" class="d-flex mb-2">
+              <VueDatePicker v-model="priceAdjustment.dates" range range-separator="to" start-placeholder="Start date"
+                end-placeholder="End date" class="mr-2" :enable-time-picker="false" format="dd-MM-yyyy"
+                :min-date="new Date()"></VueDatePicker>
+              <button type="button" class="btn btn-danger" @click="removeMinusPriceAdjustment(index)">Remove</button>
+            </div>
+            <button type="button" class="btn btn-success" @click="addMinusPriceAdjustment">Add New Interval </button>
+          </div>
+        </div>
+
+        <button class="btn btn-info btn-lg btn-block mb-5" @click="updateMinusPriceAdjustments">
+          Remove availabilites
+        </button>
+        <VCalendar expanded :attributes='calendarAttributes' @update:pages="handleMonthChange" ref="calendar"></VCalendar>
+      </div>
     </div>
   </div>
 </template>
@@ -119,12 +144,38 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import AccommodationService from '@/service/AccommodationService';
 import { toast } from 'vue3-toastify';
+import { th } from "date-fns/locale";
 
 export default {
   name: "CreatePropertyListing",
   components: {
     VueDatePicker,
     NavBar,
+  },
+  computed: {
+    calendarAttributes() {
+      return this.accommodations.map((item) => {
+        let attribute = {
+          key: item.date,
+          dates: item.date,
+          customData: { price: item.price },
+        };
+        if (item.status.toLowerCase() === 'available') {
+          attribute.highlight = { color: 'green', fillMode: 'light' };
+          attribute.color = '#00ff00';
+          attribute.popover = {
+            label: `Available - $${item.price}`
+          };
+        } else {
+          attribute.color = '#ff0000';
+          attribute.highlight = { color: 'red', fillMode: 'light' };
+          attribute.popover = {
+            label: 'Reserved'
+          };
+        }
+        return attribute;
+      });
+    }
   },
   data() {
     return {
@@ -136,8 +187,9 @@ export default {
         maxGuests: 1,
         priceType: "per-unit",
         images: [],
-        priceAdjustments: [],
       },
+      pricePlusAdjustments: [],
+      priceMinusAdjustments: [],
       availableFilters: [
         "WiFi",
         "Pool",
@@ -148,83 +200,57 @@ export default {
         "Balcony",
         "Kitchen",
       ],
+      filterMap: {
+        "wifi": "WiFi",
+        "pool": "Pool",
+        "parking": "Parking",
+        "fireplace": "Fireplace",
+        "spa": "Spa",
+        "bath": "Bath",
+        "balcony": "Balcony",
+        "kitchen": "Kitchen",
+      },
+      accommodationId: null,
+      accommodations: [],
     };
   },
   created() {
     const propertyId = this.$route.params.id;
+    this.accommodationId = propertyId;
     console.log(`Property ID from route: ${propertyId}`);
-    const property = this.getPropertyById();
-    console.log(property);
     if (propertyId) {
-      this.form = {
-        ...property,
-        images: property.images || [],
-        priceAdjustments: property.priceAdjustments || []
-      };
+      this.setAccommodationInfo();
     }
+
   },
   methods: {
     submitForm() {
 
-//       // this is the request the backend expects
-//       public class AdjustPriceRequest {
-//     List<IntervalPrice> pricesPerInterval;
-
-//     @Getter
-//     @Setter
-//     @NoArgsConstructor
-//     @AllArgsConstructor
-//     public static class IntervalPrice {
-//         @JsonFormat(pattern = "yyyy-MM-dd")
-//         LocalDate startDate;
-//         @JsonFormat(pattern = "yyyy-MM-dd")
-//         LocalDate endDate;
-//         double price;
-//     }
-// }
-
-      let priceAdjustmentList = [];
-      this.form.priceAdjustments.forEach(priceAdjustment => {
-        priceAdjustmentList.push({
-          startDate: priceAdjustment.dates[0].toISOString().split('T')[0],
-          endDate: priceAdjustment.dates[1].toISOString().split('T')[0],
-          price: priceAdjustment.price
-        });
-      });
-      priceAdjustmentList = {
-        pricesPerInterval: priceAdjustmentList
-      };
       const submissionData = {
         ...this.form,
         filters: this.form.filters.join(', ').toLocaleLowerCase(),
-        priceAdjustments: this.form.priceAdjustments.map(adjustment => ({
-          priceAdjustmentDate: {
-            date: adjustment.dates[0].toISOString().split('T')[0],
-            price: adjustment.price,
-          }
-        })),
-        images: this.form.images.map(image => ({ base64Image: image.split(',')[1] }))
+        images: this.form.images.map(image => {return {'imageData': image.split(',')[1]}})
       };
 
       console.log("Form submitted:", submissionData);
-      AccommodationService.addAccommodation(submissionData).then(res => {
-
+      let method, params;
+      if (this.accommodationId) {
+        method = AccommodationService.updateAccommodation
+        params = [this.accommodationId, submissionData];
+      } else {
+        method = AccommodationService.addAccommodation
+        params = [submissionData];
+      }
+      method(...params).then(res => {
+        toast('New accommodation added', {
+          autoClose: 1000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
         console.log(res.data);
         let accommodationId = res.data.id;
-        AccommodationService.adjustPrice(accommodationId, priceAdjustmentList).then(res => {
-          toast('New accommodation added', {
-            autoClose: 1000,
-            type: 'success',
-            position: toast.POSITION.BOTTOM_RIGHT
-          });
-          console.log(res.data);
-        }).catch(err => {
-          toast('Failed to add price!!!', {
-            autoClose: 1000,
-            type: 'error',
-            position: toast.POSITION.BOTTOM_RIGHT
-          });
-        })
+        this.accommodationId = accommodationId;
+
       }).catch(err => {
         toast('You did something wrong!!!', {
           autoClose: 1000,
@@ -248,46 +274,124 @@ export default {
       this.form.images.splice(index, 1);
       this.form.images.unshift(selectedImage);
     },
-    addPriceAdjustment() {
-      this.form.priceAdjustments.push({ dates: [], price: null });
+    addPlusPriceAdjustment() {
+      this.pricePlusAdjustments.push({ dates: [], price: null });
     },
-    removePriceAdjustment(index) {
-      this.form.priceAdjustments.splice(index, 1);
+    removePlusPriceAdjustment(index) {
+      this.pricePlusAdjustments.splice(index, 1);
+    },
+    addMinusPriceAdjustment() {
+      this.priceMinusAdjustments.push({ dates: [] });
+    },
+    removeMinusPriceAdjustment(index) {
+      this.priceMinusAdjustments.splice(index, 1);
+    },
+    updatePlusPriceAdjustments() {
+      if (!this.accommodationId) return;
+      console.log(this.pricePlusAdjustments);
+      let pricePlusAdjustments = [];
+
+      this.pricePlusAdjustments.forEach(priceAdjustment => {
+        pricePlusAdjustments.push({
+          startDate: priceAdjustment.dates[0].toISOString().split('T')[0],
+          endDate: priceAdjustment.dates[1].toISOString().split('T')[0],
+          price: priceAdjustment.price
+        });
+      });
+
+      const pricePlusAdjustmentsList = {
+        pricesPerInterval: pricePlusAdjustments
+      };
+
+      console.log(pricePlusAdjustmentsList);
+      AccommodationService.adjustPrice(this.accommodationId, pricePlusAdjustmentsList).then(res => {
+        toast('Price adjusted successfully!', {
+          autoClose: 1000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        this.fetchAccommodationDates(this.$refs.calendar.pages[0].month, this.$refs.calendar.pages[0].year);
+        console.log(res.data);
+      }).catch(err => {
+        toast('Failed to adjust price!', {
+          autoClose: 1000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        this.fetchAccommodationDates(this.$refs.calendar.pages[0].month, this.$refs.calendar.pages[0].year);
+        console.log(err);
+      });
+    },
+    updateMinusPriceAdjustments() {
+      if (!this.accommodationId) return;
+      let priceMinusAdjustments = [];
+      this.priceMinusAdjustments.forEach(priceAdjustment => {
+        priceMinusAdjustments.push({
+          startDate: priceAdjustment.dates[0].toISOString().split('T')[0],
+          endDate: priceAdjustment.dates[1].toISOString().split('T')[0],
+        });
+      });
+      const priceMinusAdjustmentsList = {
+        pricesPerInterval: priceMinusAdjustments
+      };
+      console.log(priceMinusAdjustmentsList);
+      AccommodationService.removePrice(this.accommodationId, priceMinusAdjustmentsList).then(res => {
+        toast('Price removed!', {
+          autoClose: 1000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        
+        this.fetchAccommodationDates(this.$refs.calendar.pages[0].month, this.$refs.calendar.pages[0].year);
+        console.log(res.data);
+      }).catch(err => {
+        toast('Failed to remove price!', {
+          autoClose: 1000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        this.fetchAccommodationDates(this.$refs.calendar.pages[0].month, this.$refs.calendar.pages[0].year);
+        console.log(err);
+      });
+
+    },
+    handleMonthChange(newPage) {
+      console.log('Month changed to:', newPage);
+      if (newPage[0].id === this.month_id) return;
+      console.log(newPage[0].month);
+      console.log(newPage[0].year);
+      this.fetchAccommodationDates(newPage[0].month, newPage[0].year);
+      this.month_id = newPage[0].id;
+    },
+    fetchAccommodationDates(month, year) {
+      if (!this.accommodationId) return;
+      AccommodationService.getDatesInfo(this.$route.params.id, month, year)
+        .then(response => {
+          console.log("Accommodation dates:", response.data);
+          this.accommodations = response.data;
+
+        })
+        .catch(error => {
+          console.error("Error fetching accommodation dates:", error);
+        });
     },
     removeImage(index) {
       this.form.images.splice(index, 1);
     },
-    getPropertyById() {
-      const propertySent =
-      {
-        id: 1,
-        name: "Central Konaci Apartments on APrtments on Apartments",
-        location: "Kopaonik",
-        filters: ["WiFi"],
-        minGuests: 1,
-        maxGuests: 6,
-        priceType: "per-unit",
-        images: [
-          "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1"
-        ],
-        priceAdjustments: [
-          {
-            dates: [
-              new Date("2024-05-21T09:20:00"),
-              new Date("2024-05-31T09:20:00")
-            ],
-            price: 1555
-          },
-          {
-            dates: [
-              new Date("2024-05-21T09:20:00"),
-              new Date("2024-05-31T09:20:00")
-            ],
-            price: 1600
-          }
-        ]
-      }
-      return propertySent
+    setAccommodationInfo() {
+      AccommodationService.getAccommodation(this.$route.params.id)
+      .then(response => {
+        console.log("Accommodation by id:", response.data);
+        let property = response.data;
+        this.form = {
+        ...property,
+        filters: property.filters.split(', ').map(filter => this.filterMap[filter]),
+        images: property.images.map(image => `data:image/png;base64,${image.base64Image}`),
+      };
+      })
+      .catch(error => {
+        console.error("Error fetching accommodation by id:", error);
+      });
     },
   }
 };
