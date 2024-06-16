@@ -25,4 +25,9 @@ const adjustPrice = (accommodationId, payload) => {
     return apiAccommodation.put(`/accommodation/price/${accommodationId}`, payload);
 }
 
-export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation };
+
+const getDatesInfo = (accommodationId, month, year) => {
+    return apiAccommodation.get(`/accommodation/dates/${accommodationId}?month=${month}&year=${year}`);
+}
+
+export default { getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo };

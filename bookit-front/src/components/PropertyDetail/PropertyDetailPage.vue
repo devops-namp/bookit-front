@@ -55,6 +55,12 @@
               ></VueDatePicker>
             </div>
           </div>
+          <div class="d-flex align-items-center justify-content-center p-4">
+            <VCalendar expanded 
+            :attributes='calendarAttributes' 
+            @update:pages="handleMonthChange"
+            />
+          </div>
           <div class="d-flex pt-4">
             <h4 class="pr-5">Guests</h4>
             <div class="col-3 d-flex align-items-center">
@@ -116,6 +122,8 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import AccommodationService from "@/service/AccommodationService";
 import ReviewService from "@/service/ReviewService";
+import { defineComponent } from 'vue';
+
 
 
 export default {
@@ -135,6 +143,29 @@ export default {
     averagePropertyRating() {
       const total = this.accommodationReviews.reduce((sum, review) => sum + review.stars, 0);
       return (total / this.accommodationReviews.length).toFixed(1);
+    },
+    calendarAttributes() {
+      return this.accommodations.map((item) => {
+        let attribute = {
+          key: item.date,
+          dates: item.date,
+          customData: { price: item.price },
+        };
+        if (item.status.toLowerCase() === 'available') {
+          attribute.highlight = { color: 'green', fillMode: 'light'};
+          attribute.color = '#00ff00';
+          attribute.popover = {
+            label: `Available - $${item.price}`
+          };
+        } else {
+          attribute.color = '#ff0000';
+          attribute.highlight = { color: 'red', fillMode: 'light'};
+          attribute.popover = {
+            label: 'Reserved'
+          };
+        }
+        return attribute;
+      });
     }
   },
   mounted() {
@@ -171,6 +202,8 @@ export default {
             console.error("Error fetching host reviews:", error);
           });
 
+        this.fetchAccommodationDates(moment().month() + 1, moment().year());
+
       })
       .catch(error => {
         console.error("Error fetching property details:", error);
@@ -204,7 +237,17 @@ export default {
 
       ],
       accommodationReviews: [
-      ]
+      ],
+      accommodations: [
+        { date: '2024-06-10', price: 120, status: 'available' },
+        { date: '2024-06-11', price: 150, status: 'available' },
+        { date: '2024-06-12', status: 'reserved' },
+        { date: '2024-06-13', status: 'reserved' },
+        { date: '2024-06-14', status: 'reserved' },
+        { date: '2024-06-15', price: 130, status: 'available' },
+        { date: '2024-06-16', price: 125, status: 'available' },
+      ],
+      month_id: null
     };
   },
   methods: {
@@ -240,6 +283,25 @@ export default {
         console.log("Setting host reviews:", resp);
         this.hostReviews = resp;
         this.averageHostRating = this.hostReviews.reduce((sum, review) => sum + review.stars, 0) / this.hostReviews.length;
+    },
+    handleMonthChange(newPage) {
+      console.log('Month changed to:', newPage);
+      if (newPage[0].id === this.month_id) return;
+      console.log(newPage[0].month);
+      console.log(newPage[0].year);
+      this.fetchAccommodationDates(newPage[0].month, newPage[0].year);
+      this.month_id = newPage[0].id;
+    },
+    fetchAccommodationDates(month, year) {
+      AccommodationService.getDatesInfo(this.$route.params.id, month, year)
+        .then(response => {
+          console.log("Accommodation dates:", response.data);
+          this.accommodations = response.data;
+          
+        })
+        .catch(error => {
+          console.error("Error fetching accommodation dates:", error);
+        });
     }
   },
 };
