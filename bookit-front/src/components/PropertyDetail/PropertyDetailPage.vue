@@ -9,7 +9,8 @@
         <p class="text-center">{{ property.location }}</p>
         <div class="carousel slide" id="propertyCarousel" data-ride="carousel">
           <div class="carousel-inner">
-            <div v-for="(image, index) in property.images" :key="index" :class="['carousel-item', { active: index === 0 }]" >
+            <div v-for="(image, index) in property.images" :key="index"
+              :class="['carousel-item', { active: index === 0 }]">
               <img :src="image" class="d-block w-100" alt="Property Image" />
             </div>
           </div>
@@ -20,11 +21,11 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
           </a>
         </div>
-        
+
         <div class="property-info mt-4">
           <div class="d-flex justify-content-center">
-              <h3 class="price-h3">{{property.price}}€</h3> *in full
-              <!-- <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}} -->
+            <h3 class="price-h3">{{ property.price }}€</h3> *in full
+            <!-- <h3 class="pricePer-h3 pl-4">{{property.pricePer}}€</h3> *{{formatPriceType(property.priceType)}} -->
           </div>
           <h3>Details</h3>
           <p><strong>Location:</strong> {{ property.location }}</p>
@@ -41,25 +42,13 @@
           <div class="d-flex">
             <h4>Reservation date</h4>
             <div class="col-5">
-              <VueDatePicker
-                v-model="reservationDate"
-                range
-                range-separator="to"
-                start-placeholder="Start date"
-                end-placeholder="End date"
-                class="mr-2"
-                :enable-time-picker="false"
-                format="dd-MM-yyyy"
-                :min-date="new Date()"
-                disabled 
-              ></VueDatePicker>
+              <VueDatePicker v-model="reservationDate" range range-separator="to" start-placeholder="Start date"
+                end-placeholder="End date" class="mr-2" :enable-time-picker="false" format="dd-MM-yyyy"
+                :min-date="new Date()" disabled></VueDatePicker>
             </div>
           </div>
           <div class="d-flex align-items-center justify-content-center p-4">
-            <VCalendar expanded 
-            :attributes='calendarAttributes' 
-            @update:pages="handleMonthChange"
-            />
+            <VCalendar expanded :attributes='calendarAttributes' @update:pages="handleMonthChange" />
           </div>
           <div class="d-flex pt-4">
             <h4 class="pr-5">Guests</h4>
@@ -73,7 +62,7 @@
             </div>
           </div>
         </div>
-        
+
         <button class="btn btn-info btn-lg btn-block mt-4" @click="reserveProperty" v-if="!fromTripHistory">
           Reserve
         </button>
@@ -87,7 +76,8 @@
         <div class="reviews mt-5" v-if="hostReviews.length > 0">
           <h3 class="text-center">Host Reviews</h3>
           <div class="row">
-            <div v-for="review in hostReviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
+            <div v-for="review in hostReviews" :key="review.id"
+              class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
               <div class="card-body bg-card-review">
                 <p class="card-text"><strong>User:</strong> {{ review.reviewerUsername }}</p>
                 <p class="card-text"><strong>Rating:</strong> {{ review.stars }} / 5</p>
@@ -100,7 +90,8 @@
         <div class="reviews mt-5" v-if="accommodationReviews.length > 0">
           <h3 class="text-center">Accommodation Reviews</h3>
           <div class="row">
-            <div v-for="review in accommodationReviews" :key="review.id" class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
+            <div v-for="review in accommodationReviews" :key="review.id"
+              class="review-item card mb-3 mr-auto col-3 bg-card-review-above-div ml-auto">
               <div class="card-body bg-card-review">
                 <p class="card-text"><strong>User:</strong> {{ review.reviewerUsername }}</p>
                 <p class="card-text"><strong>Rating:</strong> {{ review.stars }} / 5</p>
@@ -152,14 +143,14 @@ export default {
           customData: { price: item.price },
         };
         if (item.status.toLowerCase() === 'available') {
-          attribute.highlight = { color: 'green', fillMode: 'light'};
+          attribute.highlight = { color: 'green', fillMode: 'light' };
           attribute.color = '#00ff00';
           attribute.popover = {
             label: `Available - $${item.price}`
           };
         } else {
           attribute.color = '#ff0000';
-          attribute.highlight = { color: 'red', fillMode: 'light'};
+          attribute.highlight = { color: 'red', fillMode: 'light' };
           attribute.popover = {
             label: 'Reserved'
           };
@@ -207,7 +198,7 @@ export default {
       })
       .catch(error => {
         console.error("Error fetching property details:", error);
-    });
+      });
   },
   data() {
     return {
@@ -251,8 +242,8 @@ export default {
     };
   },
   methods: {
-    formatPriceType(priceType){
-      return priceType.replace('price-','').replace('-',' ')
+    formatPriceType(priceType) {
+      return priceType.replace('price-', '').replace('-', ' ')
     },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
@@ -274,15 +265,15 @@ export default {
       this.property.images = resp.images.map(image => `data:image/png;base64,${image.base64Image}`);
     },
     setAccommodationReviewData(resp) {
-        console.log("Setting reviews:", resp);
-        // add all reviews to the array
-        this.accommodationReviews = resp;
-        this.averagePropertyRating = this.accommodationReviews.reduce((sum, review) => sum + review.stars, 0) / this.accommodationReviews.length;
+      console.log("Setting reviews:", resp);
+      // add all reviews to the array
+      this.accommodationReviews = resp;
+      this.averagePropertyRating = this.accommodationReviews.reduce((sum, review) => sum + review.stars, 0) / this.accommodationReviews.length;
     },
     setHostReviewData(resp) {
-        console.log("Setting host reviews:", resp);
-        this.hostReviews = resp;
-        this.averageHostRating = this.hostReviews.reduce((sum, review) => sum + review.stars, 0) / this.hostReviews.length;
+      console.log("Setting host reviews:", resp);
+      this.hostReviews = resp;
+      this.averageHostRating = this.hostReviews.reduce((sum, review) => sum + review.stars, 0) / this.hostReviews.length;
     },
     handleMonthChange(newPage) {
       console.log('Month changed to:', newPage);
@@ -297,7 +288,7 @@ export default {
         .then(response => {
           console.log("Accommodation dates:", response.data);
           this.accommodations = response.data;
-          
+
         })
         .catch(error => {
           console.error("Error fetching accommodation dates:", error);
@@ -308,15 +299,16 @@ export default {
 </script>
 
 <style scoped>
-.bg-card-review-above-div{
+.bg-card-review-above-div {
   background: lightyellow;
   color: black;
   border: 2px solid blue;
 }
 
-.bg-card-review{
+.bg-card-review {
   color: black;
 }
+
 .entire-div {
   min-height: 100vh;
   background-color: #f8f9fa;
@@ -333,19 +325,20 @@ export default {
   object-fit: contain;
 }
 
-.price-h3{
+.price-h3 {
   color: lightskyblue;
   font-size: xx-large;
   font-weight: 600;
 }
 
-.pricePer-h3{
+.pricePer-h3 {
   color: lightgreen;
   font-size: larger;
   font-weight: 600;
 }
 
-.ratings, .reviews {
+.ratings,
+.reviews {
   margin-top: 2rem;
 }
 
