@@ -12,5 +12,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  define: {
+    VITE_BACKEND_BASE_URL: process.env.VITE_BACKEND_BASE_URL
   }
 })
