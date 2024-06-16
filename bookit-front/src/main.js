@@ -10,6 +10,8 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import momentPlugin from './plugins/moment-plugin';
 import store from './store/store.js'
+import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
 
 
 import { faSuitcase } from '@fortawesome/free-solid-svg-icons'
@@ -102,6 +104,9 @@ const app = createApp(App);
 app.use(router);
 app.use(store);
 app.use(momentPlugin);
+app.use(setupCalendar, {});
+app.component('VCalendar', Calendar)
+app.component('VDatePicker', DatePicker)
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('VueDatePicker', VueDatePicker);
