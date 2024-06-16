@@ -219,7 +219,7 @@ export default {
           });
           console.log(res.data);
         }).catch(err => {
-          toast('You did something wrong!!!', {
+          toast('Failed to add price!!!', {
             autoClose: 1000,
             type: 'error',
             position: toast.POSITION.BOTTOM_RIGHT
