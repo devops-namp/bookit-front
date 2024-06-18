@@ -5,104 +5,97 @@
       <div class="reservations-list pt-5 d-flex flex-column align-items-center">
         <h2 class="text-white mb-4">My Reservations</h2>
         <div class="reservation-card" v-for="reservation in reservations" :key="reservation.id">
-         <div class="d-flex justify-content-center p-5 col-4">
-          <img :src="reservation.image" alt="Reservation Image" class="reservation-image">
-         </div>
+          <div class="d-flex justify-content-center p-5 col-4">
+            <img 
+              v-if="reservation.accommodationDto.images[0] && reservation.accommodationDto.images[0].base64Image" 
+              :src="'data:image/jpeg;base64,' + reservation.accommodationDto.images[0].base64Image" alt="Reservation Image" class="reservation-image">
+            <img v-else src="@/assets/No-Image.png" alt="Reservation Image" class="reservation-image">
+          </div>
          <div class="reservation-details col">
-            <h5>{{ reservation.name }}</h5>
-            <label>{{ reservation.location }}</label>
-            <label>{{ formatDate(reservation.startDate) }} to {{ formatDate(reservation.endDate) }}</label>
-            <label>Status: <span :class="statusClass(reservation.status)">{{ reservation.status }}</span></label>
-            <label>Adults: {{ reservation.adults }}&nbsp;&nbsp; Children: {{ reservation.children }}</label>
+            <h5>{{ reservation.accommodationDto.name }}</h5>
+            <label>{{ reservation.accommodationDto.location }}</label>
+            <label>{{ formatDate(reservation.fromDate) }} to {{ formatDate(reservation.toDate) }}</label>
+            <label>Status: <span :class="statusClass(reservation.state)">{{ reservation.state }}</span></label>
+            <label>Number of guests: {{ reservation.numOfGusts}}&nbsp;&nbsp;</label>
             <button class="btn btn-danger" @click="cancelReservation(reservation.id)">Cancel Reservation</button>
          </div>
          <div class="col align-content-center text-center">
-            <h3 class="price-h3">{{ reservation.price }}€</h3> *in full
-            <h3 class="pricePer-h3 pt-5">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}
+            <h3 class="price-h3">{{ reservation.totalPrice }}€</h3> *in full
+            <!-- <h3 class="pricePer-h3 pt-5">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}} -->
          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import AccommodationService from "@/service/AccommodationService";
 import NavBar from "../util/NavBar.vue";
 import moment from "moment";
+import { ref, onMounted } from 'vue';
 
 export default {
   name: "MyReservationPage",
   components: {
     NavBar,
   },
-  data() {
-    return {
-      reservations: [
-        {
-          id: 1,
-          name: "Central Konaci Apartments",
-          location: "Kopaonik",
-          startDate: "2024-06-01",
-          endDate: "2024-06-10",
-          status: "Accepted",
-          adults: 2,
-          children: 0,
-          price:300,
-          priceType: "price-per-person",
-          pricePer: 150,
-          image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-        },
-        {
-          id: 2,
-          name: "Central Zlatibor",
-          location: "Zlatibor",
-          startDate: "2024-07-15",
-          endDate: "2024-07-25",
-          status: "Declined",
-          adults: 2,
-          children: 4,
-          price:250,
-          priceType: "price-per-person",
-          pricePer: 15,
-          image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-        },
-        {
-          id: 3,
-          name: "Central Zlatar",
-          location: "Zlatibor",
-          startDate: "2024-07-15",
-          endDate: "2024-07-25",
-          status: "Pending",
-          adults: 1,
-          children: 2,
-          price:250,
-          priceType: "price-per-unit",
-          pricePer: 10,
-          image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/551076950.jpg?k=0cc401ec6cfc9c27e602d358c5a36afcd524c9bbafd93a1152edbad6208c564d&o=&hp=1",
-        },
-      ],
+  setup() {
+    const reservations = ref([]);
+
+    const fetchReservations = async () => {
+      try {
+        const response = await AccommodationService.getGuestsReservations(localStorage.getItem("username"));
+        console.log(response.data);
+        reservations.value = response.data;
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
     };
-  },
-  methods: {
-    formatPriceType(priceType){
-      return priceType.replace('price-','').replace('-',' ')
-    },
-    formatDate(date) {
+
+    const formatPriceType = (priceType) => {
+      if (!priceType) return '';
+      return priceType.replace('price-', '').replace('-', ' ');
+    };
+
+    const formatDate = (date) => {
       return moment(date).format("DD-MM-YYYY");
-    },
-    statusClass(status) {
+    };
+
+    const statusClass = (status) => {
       return {
         'text-success font-weight-bold': status === 'Accepted',
         'text-warning font-weight-bold': status === 'Pending',
         'text-danger font-weight-bold': status === 'Declined'
       };
-    },
-    cancelReservation(id) {
-      this.reservations = this.reservations.filter(reservation => reservation.id !== id);
-      alert('Reservation cancelled successfully.');
-    }
+    };
+
+    const cancelReservation = async (id) => {
+      try {
+        await AccommodationService.rejectReservationGuest(id);
+        reservations.value = reservations.value.filter(reservation => reservation.id !== id);
+        alert('Reservation cancelled successfully.');
+        // TODO ovdje treba slati na back
+        
+      } catch (error) {
+        console.error("Error cancelling reservation:", error);
+        alert('Failed to cancel the reservation.');
+      }
+    };
+
+    onMounted(fetchReservations);
+
+    return {
+      reservations,
+      formatPriceType,
+      formatDate,
+      statusClass,
+      cancelReservation,
+    };
   }
 };
 </script>
+
 <style scoped>
 .price-h3{
   color: lightskyblue;
