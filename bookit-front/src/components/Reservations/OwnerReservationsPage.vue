@@ -33,7 +33,8 @@
           <div class="col align-content-center text-center p-3">
             <h3 class="price-h3">{{ reservation.totalPrice }}€</h3> *in full <hr class="m-0">
             <!-- <h3 class="pricePer-h3 pt-4">{{reservation.pricePer}}€</h3> *{{formatPriceType(reservation.priceType)}}<hr class="m-0"> -->
-            <h3 class="cancelations-h3 pt-4">{{reservation.numberOfCancelations}}</h3> *users previous cancelations
+            <h3 class="cancelations-h3 pt-4">{{ reservation.rejectCount || 0 }}</h3> *users previous cancelations
+
           </div>
         </div>
       </div>
@@ -46,6 +47,7 @@ import AccommodationService from "@/service/AccommodationService";
 import NavBar from "../util/NavBar.vue";
 import moment from "moment";
 import { ref, watch, onMounted } from 'vue';
+import UserService from "@/service/UserService";
 
 export default {
   name: "OwnerReservationsPage",
@@ -54,21 +56,33 @@ export default {
   },
   setup() {
     const reservations = ref([]);
-    const autoAccept = ref(false);
+    const autoAccept = ref(null);
 
     const fetchReservations = async () => {
       try {
-        const response = await AccommodationService.getReservations(localStorage.getItem("username"));
-        console.log(response.data);
+        const response = await AccommodationService.getHostsReservations(localStorage.getItem("username"));
         reservations.value = response.data;
+        const usernames = reservations.value.map(reservation => reservation.guestUsername);
+        const rejectCounts = await UserService.getRejectCount(usernames);
+        reservations.value = reservations.value.map(reservation => ({
+          ...reservation,
+          rejectCount: rejectCounts.data[reservation.guestUsername] || 0
+        }));
       } catch (error) {
         console.error("Error fetching reservations:", error);
       }
     };
+    const fetchAutoAccept = async () => {
+      try {
+        const response = await UserService.getAutoapproveStatus(localStorage.getItem("username"));
+        console.log("S backa sam dobila vrednost: " + response.data);
+        autoAccept.value = response.data;
+      } catch (error) {
+        console.error("Error fetching auto accept status:", error);
+      }
+    };
 
-    // const formatPriceType = (priceType) => {
-    //   return priceType.replace('price-', '').replace('-', ' ')
-    // };
+
     const formatPriceType = (priceType) => {
       if (!priceType) return '';
       return priceType.replace('price-', '').replace('-', ' ')
@@ -78,18 +92,19 @@ export default {
       return moment(date).format("DD-MM-YYYY");
     };
 
-    const statusClass = (status) => {
+    const statusClass = (state) => {
       return {
-        'text-success font-weight-bold': status === 'Accepted',
-        'text-warning font-weight-bold': status === 'Pending',
-        'text-danger font-weight-bold': status === 'Declined'
+        'text-success font-weight-bold': state === 'Accepted',
+        'text-warning font-weight-bold': state === 'Pending',
+        'text-danger font-weight-bold': state === 'Declined'
       };
     };
 
     const confirmReservation = (id) => {
       reservations.value = reservations.value.map(reservation => {
         if (reservation.id === id) {
-          reservation.status = 'Accepted';
+          reservation.state = 'Accepted';
+          AccommodationService.approveReservation(id);
         }
         return reservation;
       });
@@ -99,26 +114,31 @@ export default {
     const declineReservation = (id) => {
       reservations.value = reservations.value.map(reservation => {
         if (reservation.id === id) {
-          reservation.status = 'Declined';
+          reservation.state = 'Declined';
+          AccommodationService.rejectReservationHost(id);
         }
         return reservation;
       });
       alert('Reservation declined.');
     };
 
-    watch(autoAccept, (newVal) => {
-      if (newVal) {
-        reservations.value = reservations.value.map(reservation => {
-          if (reservation.status === 'Pending') {
-            reservation.status = 'Accepted';
-          }
-          return reservation;
-        });
-        alert('All pending reservations have been automatically accepted.');
+    watch(autoAccept, async (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        if (newVal) {
+          await UserService.setAutoapproveToTrue(localStorage.getItem("username"));
+          fetchReservations();
+        } else {
+          await UserService.setAutoapproveToFalse(localStorage.getItem("username"));
+        }
       }
     });
 
-    onMounted(fetchReservations);
+    onMounted( async () => {
+      fetchReservations();
+      fetchAutoAccept();
+    })
+    
+    
 
     return {
       autoAccept,

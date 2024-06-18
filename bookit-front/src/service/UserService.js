@@ -20,4 +20,20 @@ const deleteAccount = (username) => {
     return api.delete(`/users/${username}`);
 }
 
-export default { register, confirmRegistration, updateProfile, getUser, deleteAccount };
+const setAutoapproveToTrue = (username) => {
+    return api.post(`/users/autoapproveTrue/${username}`);
+}
+
+const setAutoapproveToFalse = (username) => {
+    return api.post(`/users/autoapproveFalse/${username}`);
+}
+
+const getAutoapproveStatus = (username) => {
+    return api.get(`/users/getAutoapproveStatus/${username}`)
+};
+
+const getRejectCount = (usernames) => {
+    return api.post(`/users/getRejectCount`, usernames);
+  }
+
+export default { getRejectCount,getAutoapproveStatus,setAutoapproveToFalse,setAutoapproveToTrue,register, confirmRegistration, updateProfile, getUser, deleteAccount };
