@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let instance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_ACCOMMODATION_BASE_URL
+    baseURL: import.meta.env.VITE_BACKEND_BASE_URL
 });
 
 instance.interceptors.request.use(config => {
