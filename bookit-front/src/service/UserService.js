@@ -16,4 +16,8 @@ const getUser = (username) => {
     return api.get(`/users/${username}`);
 }
 
-export default { register, confirmRegistration, updateProfile, getUser };
+const deleteAccount = (username) => {
+    return api.delete(`/users/${username}`);
+}
+
+export default { register, confirmRegistration, updateProfile, getUser, deleteAccount };

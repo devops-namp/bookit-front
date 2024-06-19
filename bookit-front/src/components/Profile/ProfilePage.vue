@@ -34,9 +34,26 @@
               </div>
               <div class="d-grid d-flex">
                 <button type="submit" class="btn btn-info btn-lg">Update</button>
-                <button type="button" @click="deleteAccount" class="btn btn-danger btn-lg ml-auto">Delete</button>
+                <button type="button" data-toggle="modal" data-target="#confirmationModal" class="btn btn-danger btn-lg ml-auto">Delete</button>
               </div>
             </form>
+          </div>
+
+          <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
+                  <h5 class="modal-title d-flex justify-content-center" id="modalLabel">Danger</h5>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete your account?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal" @click="deleteAccount">Yes</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -78,7 +95,18 @@ export default {
   },
 
   methods: {
-    deleteAccount() {},
+    deleteAccount() {
+      UserService.deleteAccount(localStorage.getItem("username")).then(_res => {
+        localStorage.clear();
+        this.$router.push("/");
+      }).catch(_err => {
+        toast("It is not possible to delete account", {
+          autoClose: 2000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      });
+    },
     checkPasswords() {
       return this.newPassword === this.confirmPassword;
     },
@@ -130,4 +158,15 @@ export default {
 .entire-div {
   min-height: 100vh;
 }
+#modalLabel {
+  color: rgb(216, 8, 8);
+  font-weight: 700;
+  font-size: 26px;
+}
+.modal-body {
+  color: rgb(54, 45, 45);
+  font-weight: 600;
+  font-size: 24px;
+}
+
 </style>
