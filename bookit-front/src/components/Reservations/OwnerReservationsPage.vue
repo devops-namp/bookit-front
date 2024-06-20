@@ -94,7 +94,7 @@ export default {
 
     const statusClass = (state) => {
       return {
-        'text-success font-weight-bold': state === 'Accepted',
+        'text-success font-weight-bold': state === 'Approved',
         'text-warning font-weight-bold': state === 'Pending',
         'text-danger font-weight-bold': state === 'Declined'
       };
@@ -103,7 +103,7 @@ export default {
     const confirmReservation = (id) => {
       reservations.value = reservations.value.map(reservation => {
         if (reservation.id === id) {
-          reservation.state = 'Accepted';
+          reservation.state = 'Approved';
           AccommodationService.approveReservation(id);
         }
         return reservation;
