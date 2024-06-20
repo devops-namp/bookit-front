@@ -67,7 +67,8 @@ export default {
         .catch(error => console.error('Error fetching notifications:', error));
     },
     setupWebSocket() {
-      this.socket = new WebSocket(`ws://localhost:8090/notificationSocket/${this.userId}`);
+      const webSocketUrl = import.meta.env.VITE_WEB_SOCKET_PORT
+      this.socket = new WebSocket(`ws://${webSocketUrl}/notificationSocket/${this.userId}`);
       this.socket.onmessage = (event) => {
         const newNotification = JSON.parse(event.data);
         this.notifications.push(newNotification);
