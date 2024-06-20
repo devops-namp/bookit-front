@@ -1,6 +1,15 @@
 <template>
   <div class="nav-item dropdown position-relative">
-    <a class="text-light text-decoration-none p-2 pl-3 position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a
+      class="text-light text-decoration-none p-2 pl-3 position-relative dropdown-toggle"
+      href="#"
+      id="notificationDropdown"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      @keypress="handleKeyPress"
+    >
       <i class="bi bi-bell-fill"></i>
       <span v-if="notificationsCount > 0" class="badge badge-danger position-absolute top-0 start-100 translate-middle">{{ notificationsCount }}</span>
     </a>
@@ -26,6 +35,7 @@
 
 <script>
 import NotificationService from '@/service/NotificationService';
+
 export default {
   name: 'Notifications',
   props: {
@@ -42,6 +52,9 @@ export default {
     };
   },
   methods: {
+    handleKeyPress(event) {
+      console.log('Key pressed:', event.key);
+    },
     handleNotificationClick(notificationId) {
       this.markNotificationAsRead(notificationId);
     },
