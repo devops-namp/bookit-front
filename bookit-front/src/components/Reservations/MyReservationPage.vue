@@ -17,7 +17,10 @@
             <label>{{ formatDate(reservation.fromDate) }} to {{ formatDate(reservation.toDate) }}</label>
             <label>Status: <span :class="statusClass(reservation.state)">{{ reservation.state }}</span></label>
             <label>Number of guests: {{ reservation.numOfGusts}}&nbsp;&nbsp;</label>
-            <button class="btn btn-danger" @click="cancelReservation(reservation.id)">Cancel Reservation</button>
+            <button class="btn btn-danger" @click="cancelReservation(reservation.id)" 
+                    v-if="reservation.state !== 'DECLINED' && new Date(reservation.fromDate) >= new Date(new Date().setDate(new Date().getDate() + 1))">
+                Cancel Reservation
+            </button>
          </div>
          <div class="col align-content-center text-center">
             <h3 class="price-h3">{{ reservation.totalPrice }}€</h3> *in full
@@ -64,7 +67,7 @@ export default {
 
     const statusClass = (status) => {
       return {
-        'text-success font-weight-bold': status === 'Accepted',
+        'text-success font-weight-bold': status === 'Approved',
         'text-warning font-weight-bold': status === 'Pending',
         'text-danger font-weight-bold': status === 'Declined'
       };
@@ -75,7 +78,6 @@ export default {
         await AccommodationService.rejectReservationGuest(id);
         reservations.value = reservations.value.filter(reservation => reservation.id !== id);
         alert('Reservation cancelled successfully.');
-        // TODO ovdje treba slati na back
         
       } catch (error) {
         console.error("Error cancelling reservation:", error);
