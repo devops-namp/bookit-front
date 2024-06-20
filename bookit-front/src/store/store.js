@@ -41,10 +41,10 @@ export default createStore({
     setTrip({ commit }, trip) {
       commit('SET_TRIP', trip);
     },
-    setTrip({ commit }, children) {
+    setChildren({ commit }, children) {
       commit('SET_CHILDREN', children);
     },
-    setTrip({ commit }, adults) {
+    setAdults({ commit }, adults) {
       commit('SET_ADULTS', adults);
     },
     setTotalPrice({ commit }, totalPrice) {
