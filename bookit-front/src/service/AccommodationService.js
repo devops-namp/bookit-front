@@ -57,4 +57,4 @@ const getDatesInfo = (accommodationId, month, year) => {
     return apiAccommodation.get(`/accommodation/dates/${accommodationId}?month=${month}&year=${year}`);
 }
 
-export default { rejectReservationGuest,rejectReservationHost,approveReservation,getGuestsReservations, getHostsReservations,getReservations, createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };
+export default { rejectReservationGuest,rejectReservationHost,approveReservation,getGuestsReservations, getHostsReservations, createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };
