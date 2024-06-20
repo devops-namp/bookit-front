@@ -12,7 +12,6 @@
             <h6 class="h6-name">{{ property.name }}</h6>
             <p>{{ property.location }}</p>
             <p>Price type: <b class="price-p">{{ formatPriceType(property.priceType) }}</b></p>
-            <button class="btn btn-danger" @click="removeProperty(property.id)">Remove property</button>
           </div>
           <div class="property-details col">
             <div class="align-content-center text-center">
@@ -119,10 +118,6 @@ export default {
     },
     formatDate(date) {
       return moment(date).format("DD-MM-YYYY");
-    },
-    removeProperty(id) {
-      this.properties = this.properties.filter(property => property.id !== id);
-      alert('Property removed successfully.');
     },
     updateProperty(id) {
       console.log(`Navigating to update property with id: ${id}`);
