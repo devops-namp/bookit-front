@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8090';
+const webSocketUrl = import.meta.env.VITE_WEB_SOCKET_PORT
+axios.defaults.baseURL = `http://${webSocketUrl}`;
 
 const getNotifications = async (userId) => {
     try {
