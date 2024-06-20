@@ -50,7 +50,7 @@ const rejectReservationGuest = (reservationId) => {
 }
 
 const removePrice = (accommodationId, payload) => {
-    return apiAccommodation.delete(`/accommodation/price/${accommodationId}`, payload);
+    return apiAccommodation.delete(`/accommodation/price/${accommodationId}`, {data: payload});
 }
 
 const getDatesInfo = (accommodationId, month, year) => {
