@@ -8,7 +8,7 @@
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
-      @keypress="handleKeyPress"
+      @onKeyPress="handleKeyPress"
     >
       <i class="bi bi-bell-fill"></i>
       <span v-if="notificationsCount > 0" class="badge badge-danger position-absolute top-0 start-100 translate-middle">{{ notificationsCount }}</span>
