@@ -252,6 +252,8 @@ export default {
         console.log(res.data);
         let accommodationId = res.data.id;
         this.accommodationId = accommodationId;
+        console.log("ID");
+        console.log(this.accommodationId);
 
       }).catch(err => {
         toast('You did something wrong!!!', {
@@ -337,6 +339,7 @@ export default {
         pricesPerInterval: priceMinusAdjustments
       };
       console.log(priceMinusAdjustmentsList);
+      console.log(this.accommodationId);
       AccommodationService.removePrice(this.accommodationId, priceMinusAdjustmentsList).then(res => {
         toast('Price removed!', {
           autoClose: 1000,
@@ -367,7 +370,7 @@ export default {
     },
     fetchAccommodationDates(month, year) {
       if (!this.accommodationId) return;
-      AccommodationService.getDatesInfo(this.$route.params.id, month, year)
+      AccommodationService.getDatesInfo(this.accommodationId, month, year)
         .then(response => {
           console.log("Accommodation dates:", response.data);
           this.accommodations = response.data;
