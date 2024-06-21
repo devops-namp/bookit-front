@@ -23,6 +23,7 @@
                   </div>
                   <div class="pt-3">
                     <button type="button" class="btn btn-info btn-lg btn-block" @click="login">Login</button>
+                    <router-link to="/main" class="btn btn-info btn-lg btn-block">Continue as guest</router-link>
                   </div>
                 </div>
               </form>
