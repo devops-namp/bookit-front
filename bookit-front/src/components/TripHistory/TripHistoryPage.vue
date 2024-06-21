@@ -4,11 +4,11 @@
       <nav-bar />
       <div class="trip-history pt-5 d-flex justify-content-center">
         <div class="trip-card" v-for="trip in trips" :key="trip.id">
-          <img :src="trip.image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
+          <img :src="'data:image/jpeg;base64,' + trip.accommodationDto.images[0].base64Image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
           <div class="trip-details" @click="openDetailedPropertyCard(trip)">
-            <h5>{{ trip.name }}</h5>
-            <p>{{ trip.location }}</p>
-            <p>{{ trip.date }}</p>
+            <h5>{{ trip.accommodationDto.name }}</h5>
+            <p>{{ trip.accommodationDto.location }}</p>
+            <p>{{ trip.fromDate }} ---- {{trip.toDate}}</p>
           </div>
           <div class="trip-details">
             <div class="ratings">
@@ -33,6 +33,7 @@ import { useRouter } from "vue-router";
 import StarRating from './StarRating.vue';
 import NavBar from "../util/NavBar.vue";
 import ReviewService from '@/service/ReviewService';
+import AccommodationService from "@/service/AccommodationService";
 
 
 export default {
@@ -46,12 +47,21 @@ export default {
 
     return { router };
   },
+  created(){
+    AccommodationService.getGuestsReservationsHistory(localStorage.getItem("username")).then(res => {
+      console.log(res.data);
+        this.trips = res.data;
+    })
+    .catch(error => {
+          console.error("Error fetching users trips:", error);
+    });
+  },
   methods: {
     openDetailedPropertyCard(trip) {
       console.log("ovo trazis");
-      console.log(trip.accommodation.id);
+      console.log(trip.accommodationDto.id);
       console.log(trip);
-      // this.$router.push({ path: `/propertyDetail/${trip}`, query: { fromTripHistory: 'true' } });
+      this.$router.push({ path: `/propertyDetail/${trip.accommodationDto.id}`, query: { fromTripHistory: 'true' } });
     },
     updateRating(rating, trip, targetType) {
       trip.placeRating = rating;
