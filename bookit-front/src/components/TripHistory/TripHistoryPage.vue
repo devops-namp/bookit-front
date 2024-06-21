@@ -4,7 +4,10 @@
       <nav-bar />
       <div class="trip-history pt-5 d-flex justify-content-center">
         <div class="trip-card" v-for="trip in trips" :key="trip.id">
-          <img :src="'data:image/jpeg;base64,' + trip.accommodationDto.images[0].base64Image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
+          <img 
+            v-if="trip.accommodationDto && trip.accommodationDto.images && trip.accommodationDto.images.length > 0 && trip.accommodationDto.images[0].base64Image" 
+            :src="'data:image/jpeg;base64,' + trip.accommodationDto.images[0].base64Image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
+            
           <div class="trip-details" @click="openDetailedPropertyCard(trip)">
             <h5>{{ trip.accommodationDto.name }}</h5>
             <p>{{ trip.accommodationDto.location }}</p>
@@ -48,12 +51,35 @@ export default {
     return { router };
   },
   created(){
-    AccommodationService.getGuestsReservationsHistory(localStorage.getItem("username")).then(res => {
+    AccommodationService.getGuestsReservationsHistory(localStorage.getItem("username"))
+    .then(res => {
       console.log(res.data);
-        this.trips = res.data;
+      this.trips = res.data;
+
+      this.trips.forEach(trip => {
+        if (trip.accommodationDto && trip.accommodationDto.id) {
+          ReviewService.getAccommodationReviews(trip.accommodationDto.id)
+            .then(accommodationReviewsRes => {
+              trip.accommodationReviews = accommodationReviewsRes.data;
+            })
+            .catch(error => {
+              console.error(`Error fetching accommodation reviews for trip ID ${trip.id}:`, error);
+            });
+        }
+        
+        if (trip.accommodationDto.hostUsername) {
+          ReviewService.getHostReviews(trip.accommodationDto.hostUsername)
+            .then(hostReviewsRes => {
+              trip.hostReviews = hostReviewsRes.data;
+            })
+            .catch(error => {
+              console.error(`Error fetching host reviews for trip ID ${trip.id}:`, error);
+            });
+        }
+      });
     })
     .catch(error => {
-          console.error("Error fetching users trips:", error);
+      console.error("Error fetching users trips:", error);
     });
   },
   methods: {
