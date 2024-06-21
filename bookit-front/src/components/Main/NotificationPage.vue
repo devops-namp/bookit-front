@@ -9,32 +9,32 @@
               Notification Settings
             </div>
             <div class="card-body">
-              <form @submit.prevent="saveSettings">
-                <div class="mb-3 custom-control custom-switch">
+              <form v-if="user" @submit.prevent="saveSettings">
+                <div v-if="role=='HOST'" class="mb-3 custom-control custom-switch">
                   <input type="checkbox" class="custom-control-input" id="reservation-created" v-model="notificationSettings.reservationRequestCreated"/>
                   <label class="custom-control-label" for="reservation-created">
                     On Reservation Request Created
                   </label>
                 </div>
-                <div class="mb-3 custom-control custom-switch">
+                <div v-if="role=='HOST'" class="mb-3 custom-control custom-switch">
                   <input type="checkbox" class="custom-control-input" id="reservation-canceled" v-model="notificationSettings.reservationDeclined"/>
                   <label class="custom-control-label" for="reservation-canceled">
                     On Reservation Declined
                   </label>
                 </div>
-                <div class="mb-3 custom-control custom-switch">
+                <div v-if="role=='HOST'" class="mb-3 custom-control custom-switch">
                   <input type="checkbox" class="custom-control-input" id="rated" v-model="notificationSettings.personalReview" />
                   <label class="custom-control-label" for="rated">
                     On Personal Review
                   </label>
                 </div>
-                <div class="mb-3 custom-control custom-switch">
+                <div v-if="role=='HOST'" class="mb-3 custom-control custom-switch">
                   <input type="checkbox" class="custom-control-input" id="property-rated" v-model="notificationSettings.accommodationReview" />
                   <label class="custom-control-label" for="property-rated">
                     On Accommodation Review
                   </label>
                 </div>
-                <div class="mb-3 custom-control custom-switch">
+                <div v-if="role=='GUEST'" class="mb-3 custom-control custom-switch">
                   <input type="checkbox" class="custom-control-input" id="reservation-response" v-model="notificationSettings.reservationRequestResolved" />
                   <label class="custom-control-label" for="reservation-response">
                     On Reservation Request Response
@@ -73,6 +73,8 @@ export default {
         accommodationReview: true,
         reservationRequestResolved: true,
       },
+      user: '',
+      role: '',
     };
   },
   methods: {
@@ -106,8 +108,18 @@ export default {
     },
   },
   created() {
+    let token = localStorage.getItem('access_token');
+    if (token) {
+      let payload = token.split('.')[1];
+      payload = window.atob(payload);
+      payload = JSON.parse(payload);
+      this.user = payload.sub;
+      this.role = payload.groups[0];
+      console.log(payload);
+    }
     this.fetchSettings();
   },
+
 };
 </script>
 
