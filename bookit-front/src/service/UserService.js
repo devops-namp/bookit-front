@@ -36,4 +36,13 @@ const getRejectCount = (usernames) => {
     return api.post(`/users/getRejectCount`, usernames);
   }
 
-export default { getRejectCount,getAutoapproveStatus,setAutoapproveToFalse,setAutoapproveToTrue,register, confirmRegistration, updateProfile, getUser, deleteAccount };
+const changeNotificationSettings = (username, settings) => {
+    return api.post(`/users/changeNotificationSettings/${username}`, settings);
+}
+
+const getNotificationSettings = (username) => {
+    return api.get(`/users/getNotificationSettings/${username}`);
+}
+
+export default { getRejectCount,getAutoapproveStatus,setAutoapproveToFalse,setAutoapproveToTrue,register, confirmRegistration, 
+    updateProfile, getUser, deleteAccount, changeNotificationSettings, getNotificationSettings };
