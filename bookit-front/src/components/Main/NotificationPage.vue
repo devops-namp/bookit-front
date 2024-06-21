@@ -11,33 +11,33 @@
             <div class="card-body">
               <form @submit.prevent="saveSettings">
                 <div class="mb-3 custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="reservation-created" v-model="notificationSettings.reservationCreated"/>
+                  <input type="checkbox" class="custom-control-input" id="reservation-created" v-model="notificationSettings.reservationRequestCreated"/>
                   <label class="custom-control-label" for="reservation-created">
-                    Reservation Created
+                    On Reservation Request Created
                   </label>
                 </div>
                 <div class="mb-3 custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="reservation-canceled" v-model="notificationSettings.reservationCanceled"/>
+                  <input type="checkbox" class="custom-control-input" id="reservation-canceled" v-model="notificationSettings.reservationDeclined"/>
                   <label class="custom-control-label" for="reservation-canceled">
-                    Reservation Canceled
+                    On Reservation Declined
                   </label>
                 </div>
                 <div class="mb-3 custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="rated" v-model="notificationSettings.rated" />
+                  <input type="checkbox" class="custom-control-input" id="rated" v-model="notificationSettings.personalReview" />
                   <label class="custom-control-label" for="rated">
-                    Rated
+                    On Personal Review
                   </label>
                 </div>
                 <div class="mb-3 custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="property-rated" v-model="notificationSettings.propertyRated" />
+                  <input type="checkbox" class="custom-control-input" id="property-rated" v-model="notificationSettings.accommodationReview" />
                   <label class="custom-control-label" for="property-rated">
-                    Property Rated
+                    On Accommodation Review
                   </label>
                 </div>
                 <div class="mb-3 custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="reservation-response" v-model="notificationSettings.reservationResponse" />
+                  <input type="checkbox" class="custom-control-input" id="reservation-response" v-model="notificationSettings.reservationRequestResolved" />
                   <label class="custom-control-label" for="reservation-response">
-                    Reservation Response
+                    On Reservation Request Response
                   </label>
                 </div>
                 <div class="d-grid pt-4">
@@ -53,9 +53,11 @@
     </div>
   </div>
 </template>
+
 <script>
 import NavBar from "../util/NavBar.vue";
 import { toast } from 'vue3-toastify';
+import UserService from "@/service/UserService";
 
 export default {
   name: 'NotificationPage',
@@ -65,25 +67,50 @@ export default {
   data() {
     return {
       notificationSettings: {
-        reservationCreated: true,
-        reservationCanceled: true,
-        rated: true,
-        propertyRated: true,
-        reservationResponse: true,
+        reservationRequestCreated: true,
+        reservationDeclined: true,
+        personalReview: true,
+        accommodationReview: true,
+        reservationRequestResolved: true,
       },
     };
   },
   methods: {
-    saveSettings() {
-      toast("Settings saved successfully!", {
-        autoClose: 2000,
-        type: 'success',
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+    async saveSettings() {
+      try {
+        await UserService.changeNotificationSettings(localStorage.getItem("username"), this.notificationSettings);
+        toast("Settings saved successfully!", {
+          autoClose: 2000,
+          type: 'success',
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } catch (error) {
+        toast("Error saving settings!", {
+          autoClose: 2000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
     },
+    async fetchSettings() {
+      try {
+        const response = await UserService.getNotificationSettings(localStorage.getItem("username"));
+        this.notificationSettings = response.data;
+      } catch (error) {
+        toast("Error fetching settings!", {
+          autoClose: 2000,
+          type: 'error',
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
+    },
+  },
+  created() {
+    this.fetchSettings();
   },
 };
 </script>
+
 
 <style scoped>
 .card {
