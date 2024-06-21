@@ -41,6 +41,10 @@ const getGuestsReservations = (username) => {
     return apiAccommodation.get(`/reservations/getByGuest/${username}`)
 };
 
+const getGuestsReservationsHistory = (username) => {
+    return apiAccommodation.get(`/reservations/getByGuestHistory/${username}`)
+};
+
 const approveReservation = (reservationId) => {
     return apiAccommodation.post(`reservations/approve/${reservationId}`)
 }
@@ -61,4 +65,4 @@ const getDatesInfo = (accommodationId, month, year) => {
     return apiAccommodation.get(`/accommodation/dates/${accommodationId}?month=${month}&year=${year}`);
 }
 
-export default { getOwnersAccommodations,rejectReservationGuest,rejectReservationHost,approveReservation,getGuestsReservations, getHostsReservations, createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };
+export default { getGuestsReservationsHistory,getOwnersAccommodations,rejectReservationGuest,rejectReservationHost,approveReservation,getGuestsReservations, getHostsReservations, createReservation, getAllAccommodations, addAccommodation, updateAccommodation, searchAccommodations, adjustPrice, getAccommodation, getDatesInfo, removePrice };
