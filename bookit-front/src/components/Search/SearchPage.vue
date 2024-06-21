@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col-md-4 point-it" v-for="result in searchResults" :key="result.id" @click="openDetailedPropertyCard(result)">
               <result-card
-                :image="result.accommodation.images[0].base64Image"
+                :image="result.accommodation.images && result.accommodation.images.length > 0 ? result.accommodation.images[0].base64Image : ''"
                 :name="result.accommodation.name"
                 :location="result.accommodation.location"
                 :filters="result.accommodation.filters"
