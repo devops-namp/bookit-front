@@ -12,17 +12,17 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/profile"><i class="bi bi-person-fill"></i>&nbsp;Manage account</a>
-            <a class="dropdown-item" href="/tripHistory"><font-awesome-icon icon="fa-solid fa-suitcase"></font-awesome-icon>&nbsp;Booking and trips</a>
-            <a class="dropdown-item" href="/myReservations"><i class="bi bi-person-hearts"></i>&nbsp;Reservations</a>
-            <a class="dropdown-item" href="/ownerReservations"><i class="bi bi-ticket-perforated"></i>&nbsp;Manage reservations</a>
-            <a class="dropdown-item" href="/myProperties"><i class="bi bi-houses"></i>&nbsp;Manage properties</a>
+            <a v-if="role=='GUEST'" class="dropdown-item" href="/tripHistory"><font-awesome-icon icon="fa-solid fa-suitcase"></font-awesome-icon>&nbsp;Booking and trips</a>
+            <a v-if="role=='GUEST'" class="dropdown-item" href="/myReservations"><i class="bi bi-person-hearts"></i>&nbsp;Reservations</a>
+            <a v-if="role=='HOST'" class="dropdown-item" href="/ownerReservations"><i class="bi bi-ticket-perforated"></i>&nbsp;Manage reservations</a>
+            <a v-if="role=='HOST'" class="dropdown-item" href="/myProperties"><i class="bi bi-houses"></i>&nbsp;Manage properties</a>
             <a class="dropdown-item" href="/password"><i class="bi bi-lock-fill"></i>&nbsp;Change password</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-left"></i>&nbsp;Sign out</a>
+            <a class="dropdown-item" @click="signout()"><i class="bi bi-box-arrow-left"></i>&nbsp;Sign out</a>
           </div>
         </li>
       </ul>
-      <a class="text-light text-decoration-none p-2" href="/propertyListing">List your property</a>
+      <a v-if="role=='HOST'" class="text-light text-decoration-none p-2" href="/propertyListing">List your property</a>
       <!-- <div v-if="user" class="nav-item dropdown position-relative">
         <a class="text-light text-decoration-none p-2 pl-3 position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="bi bi-bell-fill"></i>
@@ -67,8 +67,27 @@ export default {
   },
   data() {
     return {
-      user: 'Aleksa Simic',
+      user: '',
+      role: '',
     };
+  },
+  mounted() {
+    let token = localStorage.getItem('access_token');
+    if (token) {
+      let payload = token.split('.')[1];
+      payload = window.atob(payload);
+      payload = JSON.parse(payload);
+      this.user = payload.sub;
+      this.role = payload.groups[0];
+      console.log(payload);
+    }
+
+  },
+  methods: {
+    signout() {
+      localStorage.removeItem('access_token');
+      window.location.href = '/';
+    },
   },
 };
 </script>

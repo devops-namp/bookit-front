@@ -6,7 +6,9 @@
         <h2 class="text-white mb-4">Manage properties</h2>
         <div class="property-card" v-for="property in properties" :key="property.id">
           <div class="d-flex justify-content-center p-5 col-3">
-            <img :src="'data:image/jpeg;base64,' + property.images[0].base64Image"  alt="Property Image" class="property-image">
+            <img v-if="property.images && property.images.length > 0" :src="'data:image/jpeg;base64,' + property.images[0].base64Image"  alt="Property Image" class="property-image">
+            <!-- No-Image.png from assets -->
+            <img v-else src="@/assets/No-Image.png" alt="Property Image" class="property-image">
           </div>
           <div class="property-details col-3">
             <h6 class="h6-name">{{ property.name }}</h6>
