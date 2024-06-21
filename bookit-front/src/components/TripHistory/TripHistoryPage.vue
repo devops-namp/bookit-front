@@ -4,16 +4,17 @@
       <nav-bar />
       <div class="trip-history pt-5 d-flex justify-content-center">
         <div class="trip-card" v-for="trip in trips" :key="trip.id">
+          
           <img 
             v-if="trip.accommodationDto && trip.accommodationDto.images && trip.accommodationDto.images.length > 0 && trip.accommodationDto.images[0].base64Image" 
             :src="'data:image/jpeg;base64,' + trip.accommodationDto.images[0].base64Image" alt="Trip Image" class="trip-image" @click="openDetailedPropertyCard(trip)">
             
-          <div class="trip-details" @click="openDetailedPropertyCard(trip)">
+          <div v-if="trip.accommodationDto" class="trip-details" @click="openDetailedPropertyCard(trip)">
             <h5>{{ trip.accommodationDto.name }}</h5>
             <p>{{ trip.accommodationDto.location }}</p>
             <p>{{ trip.fromDate }} ---- {{trip.toDate}}</p>
           </div>
-          <div class="trip-details">
+          <div class="trip-details" v-if="trip.accommodationDto">
             <div class="ratings">
               <div>
                 <h6>Rate the Place</h6>
@@ -37,6 +38,7 @@ import StarRating from './StarRating.vue';
 import NavBar from "../util/NavBar.vue";
 import ReviewService from '@/service/ReviewService';
 import AccommodationService from "@/service/AccommodationService";
+import { ta } from "date-fns/locale";
 
 
 export default {
@@ -53,14 +55,30 @@ export default {
   created(){
     AccommodationService.getGuestsReservationsHistory(localStorage.getItem("username"))
     .then(res => {
+      console.log();
       console.log(res.data);
       this.trips = res.data;
+      // deduplicate by accommodation ID
+      this.trips = this.trips.filter((trip, index, self) =>
+        index === self.findIndex((t) => (
+          t.accommodationDto && trip.accommodationDto && t.accommodationDto.id === trip.accommodationDto.id
+        ))
+      );
 
       this.trips.forEach(trip => {
         if (trip.accommodationDto && trip.accommodationDto.id) {
           ReviewService.getAccommodationReviews(trip.accommodationDto.id)
             .then(accommodationReviewsRes => {
+              console.log("Accommodation reviews for accommodation ID", trip.accommodationDto.id);
+              console.log(accommodationReviewsRes.data);
               trip.accommodationReviews = accommodationReviewsRes.data;
+              trip.accommodationReviews.forEach(review => {
+                if (review.reviewerUsername == localStorage.getItem("username")) {
+                  trip.accommodationReviewId = review.id;
+                  trip.placeRating = review.stars;
+                }
+              });
+              console.log(trip);
             })
             .catch(error => {
               console.error(`Error fetching accommodation reviews for trip ID ${trip.id}:`, error);
@@ -71,6 +89,12 @@ export default {
           ReviewService.getHostReviews(trip.accommodationDto.hostUsername)
             .then(hostReviewsRes => {
               trip.hostReviews = hostReviewsRes.data;
+              trip.hostReviews.forEach(review => {
+                if (review.reviewerUsername == localStorage.getItem("username")) {
+                  trip.hostReviewId = review.id;
+                  trip.hostRating = review.stars;
+                }
+              });
             })
             .catch(error => {
               console.error(`Error fetching host reviews for trip ID ${trip.id}:`, error);
@@ -90,16 +114,28 @@ export default {
       this.$router.push({ path: `/propertyDetail/${trip.accommodationDto.id}`, query: { fromTripHistory: 'true' } });
     },
     updateRating(rating, trip, targetType) {
-      trip.placeRating = rating;
+      console.log("Rating updated to", rating, "for trip ID", trip.id, "and target type", targetType);
+      if (targetType === 'ACCOMMODATION') {
+        trip.placeRating = rating;
+      } else {
+        trip.hostRating = rating;
+      }
       let payload = {
         targetType: targetType,
-        hostUsername: "host1",
-        accommodationId: 1,
+        hostUsername: trip.accommodationDto.hostUsername,
+        accommodationId: trip.accommodationDto.id,
         stars: rating,
+        id: targetType === 'ACCOMMODATION' ? trip.accommodationReviewId : trip.hostReviewId,
       };
 
       ReviewService.updateReview(trip.id, payload)
-        .then(() => {
+        .then((resp) => {
+          console.log(resp.data);
+          if (targetType === 'ACCOMMODATION') {
+            trip.accommodationReviewId = resp.data.id;
+          } else {
+            trip.hostReviewId = resp.data.id;
+          }
           console.log("Rating updated successfully");
         })
         .catch((error) => {
