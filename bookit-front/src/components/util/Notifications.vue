@@ -59,7 +59,7 @@ export default {
       this.markNotificationAsRead(notificationId);
     },
     fetchNotifications() {
-      NotificationService.getNotifications(this.userId)
+      NotificationService.getNotifications(localStorage.getItem("username"))
         .then(response => {
           this.notifications = response;
           this.notificationsCount = response.length;
@@ -68,7 +68,7 @@ export default {
     },
     setupWebSocket() {
       const webSocketUrl = import.meta.env.VITE_WEB_SOCKET_PORT
-      this.socket = new WebSocket(`ws://${webSocketUrl}/notificationSocket/${this.userId}`);
+      this.socket = new WebSocket(`ws://${webSocketUrl}/notificationSocket/${localStorage.getItem("username")}`);
       this.socket.onmessage = (event) => {
         const newNotification = JSON.parse(event.data);
         this.notifications.push(newNotification);
